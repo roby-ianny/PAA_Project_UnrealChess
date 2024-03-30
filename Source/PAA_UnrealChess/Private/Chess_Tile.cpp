@@ -49,6 +49,11 @@ FVector2D AChess_Tile::getGridPosition()
 	return TileGridPosition;
 }
 
+void AChess_Tile::SetDarkMaterial()
+{
+	StaticMeshComponent->SetMaterial(0, DarkVariant);
+}
+
 // Called when the game starts or when spawned
 void AChess_Tile::BeginPlay()
 {

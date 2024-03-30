@@ -14,7 +14,7 @@ AChess_GameField::AChess_GameField()
 	// size of the field (8x8)
 	Size = 8;
 	// Tile dimension
-	TileSize = 100;
+	TileSize = 120;
 
 }
 
@@ -57,6 +57,8 @@ void AChess_GameField::GenerateField()
 			const float TileScale = TileSize / 100;
 			Obj->SetActorScale3D(FVector(TileScale, TileScale, 0.05));
 			Obj->setGridPosition(x, y);
+			if ((x + y) % 2 == 0)
+				Obj->SetDarkMaterial();
 			TileArray.Add(Obj);
 			TileMap.Add(FVector2D(x, y), Obj);
 		}
