@@ -5,7 +5,14 @@
 #include "CoreMinimal.h"
 #include "Chess_Tile.h"
 #include "GameFramework/Actor.h"
+#include "Chess_Pawn.h"
+#include "Chess_Rook.h"
+#include "Chess_Bishop.h"
+#include "Chess_Knight.h"
+#include "Chess_Queen.h"
+#include "Chess_King.h"
 #include "Chess_GameField.generated.h"
+
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnReset); // Servirà quando ci sarà l'evento di reset
 
@@ -42,6 +49,25 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AChess_Tile> TileClass;
 
+	// Also type safety is needed for the pieces
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AChess_Pawn> PawnClass;
+	
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AChess_Rook> RookClass;
+	
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AChess_Bishop> BishopClass;
+		
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AChess_Knight> KnightClass;
+		
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AChess_Queen> QueenClass;
+		
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<AChess_King> KingClass;
+
 	//tile size
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	float TileSize;
@@ -61,6 +87,12 @@ public:
 
 	// Generate an empty game field
 	void GenerateField();
+
+	// spawn a single piece (useful also for pawn promotion)
+	void SpawnPiece(TSubclassOf<AChess_Piece> PieceClass, int32 XPosition, int32 YPosition, bool black);
+
+	// spawn the pieces (useful also when resetting)
+	void SpawnPieces();
 
 	//Return a (x,y) position after clicking on a field tile
 	FVector2D getPosition(const FHitResult& Hit);
@@ -89,3 +121,4 @@ public:
 	virtual void Tick(float DeltaTime) override;
 */
 };
+

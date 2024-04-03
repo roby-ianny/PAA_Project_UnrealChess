@@ -28,6 +28,7 @@ void AChess_GameField::BeginPlay()
 {
 	Super::BeginPlay();
 	GenerateField();
+	SpawnPieces();
 }
 
 void AChess_GameField::ResetField()
@@ -65,6 +66,65 @@ void AChess_GameField::GenerateField()
 	}
 }
 
+void AChess_GameField::SpawnPiece(TSubclassOf<AChess_Piece> PieceClass, int32 XPosition, int32 YPosition, bool black)
+{
+	const float TileScale = TileSize / 100;
+
+	FVector PieceLocation = AChess_GameField::getRelativeLocationByXYPosition(XPosition, YPosition);
+	PieceLocation.Z += 1;
+
+	AChess_Piece* NewPiece = GetWorld()->SpawnActor<AChess_Piece>(PieceClass, PieceLocation, FRotator::ZeroRotator);
+	NewPiece->SetActorScale3D(FVector(TileScale, TileScale, 0.05));
+
+	if (black)
+		NewPiece->SetDarkMaterial();
+}
+
+
+void AChess_GameField::SpawnPieces()
+{
+	
+
+	// Spawns pawns
+	for (int32 x = 0; x < Size; x++) {
+		SpawnPiece(PawnClass, x, 1, false);
+		SpawnPiece(PawnClass, x, 6, true);
+	}
+
+	// Spawn other pieces
+	for (int32 x = 0; x < Size; x++) {
+		switch (x)
+		{
+		case 0:
+		case 7:
+			SpawnPiece(RookClass, x, 0, false);
+			SpawnPiece(RookClass, x, 7, true);
+			break;
+		case 1:
+		case 6:
+			SpawnPiece(KnightClass, x, 0, false);
+			SpawnPiece(KnightClass, x, 7, true);
+			break;
+
+		case 2:
+		case 5:
+			SpawnPiece(BishopClass, x, 0, false);
+			SpawnPiece(BishopClass, x, 7, true);
+			break;
+		case 3: 
+			SpawnPiece(QueenClass, x, 0, false);
+			SpawnPiece(QueenClass, x, 7, true);
+			break;
+		case 4: 
+			SpawnPiece(KingClass, x, 0, false);
+			SpawnPiece(KingClass, x, 7, true);
+			break;
+		default:
+			break;
+		}
+	}
+}
+
 FVector2D AChess_GameField::getPosition(const FHitResult& Hit)
 {
 	return Cast<AChess_Tile>(Hit.GetActor())->getGridPosition();
@@ -77,7 +137,7 @@ TArray<AChess_Tile*>& AChess_GameField::getTileArray()
 
 FVector AChess_GameField::getRelativeLocationByXYPosition(const int32 InX, const int32 InY) const
 {
-	return TileSize * FVector(InX,InY,0);
+	return TileSize * FVector(InX,-InY,0);
 }
 
 FVector2D AChess_GameField::getXYPositionByRelativeLocation(const FVector& Location) const

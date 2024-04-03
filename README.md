@@ -29,3 +29,7 @@ NON VERRANNO VALUTATI PROGETTI:
 
 ## Risorse che ho utilizzato
 - [Set dei pezzi: kiwen-suwi](https://github.com/lichess-org/lila/tree/master/public/piece)
+- [PNG Import](https://www.youtube.com/watch?v=g9x1xljJau0)
+
+## Altro
+Idea iniziale di come realizzare le classi dei pezzi ![Pieces_UML](./Ideas/PiecesUML)
