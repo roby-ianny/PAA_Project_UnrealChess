@@ -11,7 +11,7 @@
 #include "Chess_CPURandom.generated.h"
 
 UCLASS()
-class PAA_UNREALCHESS_API AChess_CPURandom : public APawn
+class PAA_UNREALCHESS_API AChess_CPURandom : public APawn, public IChess_PlayerInterface
 {
 	GENERATED_BODY()
 
@@ -35,5 +35,4 @@ public:
 	virtual void OnTurn() override;
 	virtual void OnWin() override;
 	virtual void OnLose() override;
-
 };

@@ -18,7 +18,9 @@ class PAA_UNREALCHESS_API UChess_GameInstance : public UGameInstance
 		UPROPERTY(EditAnywhere)
 		FString CurrentTurnMessage = "Current Player";
 
+		UFUNCTION(BlueprintCallable)
+		FString GetTurnMessage();
 
 		UFUNCTION(BlueprintCallable)
-		FString SetTurnMessage();
+		void SetTurnMessage(FString Message);
 };

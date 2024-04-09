@@ -53,6 +53,9 @@ void AChess_CPURandom::OnWin()
 void AChess_CPURandom::OnLose()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("CPU (Random) Loses"));
-	GameInstance->SetTurnMessage(TEXT("AI Loses!"))
+	GameInstance->SetTurnMessage(TEXT("AI Loses!"));
 }
+
+
+
 

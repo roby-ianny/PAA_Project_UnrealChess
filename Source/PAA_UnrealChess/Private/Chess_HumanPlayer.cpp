@@ -14,6 +14,18 @@ AChess_HumanPlayer::AChess_HumanPlayer()
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
+	// Set the pawn to be controller from player 0
+	AutoPossessPlayer = EAutoReceiveInput::Player0;
+
+	// Camera component
+	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
+
+	// Camera as root component
+	SetRootComponent(Camera);
+
+	// Game instance reference
+	GameInstance = Cast<UChess_GameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
+
 }
 
 // Called when the game starts or when spawned

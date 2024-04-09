@@ -4,6 +4,7 @@
 
 
 #include "CoreMinimal.h"
+#include "Chess_PlayerInterface.h"
 #include "Chess_GameField.h"
 #include "GameFramework/GameMode.h"
 #include "Chess_GameMode.generated.h"
@@ -27,8 +28,8 @@ public:
 	bool IsGameOver;
 
 	//array of player interfaces
-	// TArray<Chess_PlayerInterface*> Players;
-	// int32 CurrentPlayer
+	TArray<IChess_PlayerInterface*> Players;
+	int32 CurrentPlayer;
 	
 	// tracks the number of moves in order to signal a drawn game
 	// int32 MoveCounter; //Maybe an array is better
@@ -57,22 +58,17 @@ public:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
-	// TODO
-	/*
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
 	// called at the start of the game
 	void ChoosePlayerAndStartGame();
 
 	// set the cell sign and the position 
-	void SetCellSign(const int32 PlayerNumber, const FVector& SpawnPosition);
+	//  SetCellSign(const int32 PlayerNumber, const FVector& SpawnPosition);
 
 	// get the next player index
 	int32 GetNextPlayer(int32 Player);
 
 	// called at the end of the game turn
 	void TurnNextPlayer(); //switcha tra un giocatore e un altro
-	*/
+	
 
 };

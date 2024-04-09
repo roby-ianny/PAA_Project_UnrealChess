@@ -3,7 +3,14 @@
 
 #include "Chess_GameInstance.h"
 
-FString UChess_GameInstance::SetTurnMessage()
+FString UChess_GameInstance::GetTurnMessage()
 {
     return CurrentTurnMessage;
 }
+
+void UChess_GameInstance::SetTurnMessage(FString Message)
+{
+    CurrentTurnMessage = Message;
+}
+
+
