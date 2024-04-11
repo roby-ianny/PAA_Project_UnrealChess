@@ -40,9 +40,8 @@ void AChess_GameMode::BeginPlay()
 	*/
 
 	float CameraPosX = (GField->TileSize * 4);
-	FVector CameraPos(CameraPosX, CameraPosX, 1000.0f);	// Prendo due volte cameraposx
-	HumanPlayer->SetActorLocationAndRotation(CameraPos, FRotationMatrix::MakeFromX(FVector(0, 0, -1)).Rotator());	//Setto come attore la telecamera e la associo allo humanplayer
-
+	FVector CameraPos(CameraPosX, -CameraPosX, 1000.0f);	// Prendo due volte cameraposx
+	HumanPlayer->SetActorLocationAndRotation(CameraPos, FRotationMatrix::MakeFromX(FVector(0, -0.05, -1)).Rotator());	//Setto come attore la telecamera e la associo allo humanplayer
 	// Human player = 0
 	Players.Add(HumanPlayer);
 	//Random Player

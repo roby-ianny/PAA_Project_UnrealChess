@@ -31,5 +31,11 @@ NON VERRANNO VALUTATI PROGETTI:
 - [Set dei pezzi: kiwen-suwi](https://github.com/lichess-org/lila/tree/master/public/piece)
 - [PNG Import](https://www.youtube.com/watch?v=g9x1xljJau0)
 
+## Set di risorse ancora da vedere per la logica del gioco
+- [ ] https://github.com/Arkay92/AIChess
+- [ ] https://www.codewithfaraz.com/python/19/create-a-chess-game-in-python-step-by-step-source-code
+- [ ] https://www.digitalsecurity.blog/post/building-a-chess-game-in-c-a-simplified-implementation
+
 ## Altro
 Idea iniziale di come realizzare le classi dei pezzi ![Pieces_UML](./Ideas/PiecesUML)
+- [ ] [Avere la scacchiera perpendicolare alla telecamera](https://www.youtube.com/watch?v=yaVKOwaMoLY)
