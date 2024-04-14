@@ -108,10 +108,13 @@ public:
 	FVector2D GetXYPositionByRelativeLocation(const FVector& Location) const;
 
 	// return tile position from actual position and direction
-	auto* GetTileByPositionAndDirection(const FVector2D Position, const Chess_Direction Direction) const;
+	AChess_Tile* GetTileByPositionAndDirection(const FVector2D Position, const Chess_Direction Direction) const;
+
+	// Executes a Move?
+
 	// check if a position is a win position
 	// bool IsWinPosition(const FVector2D Position) const; //Not needed now
-
+	
 	// checking if is a valid field position
 	// inline bool IsValidPosition(const FVector2D Position) const; //Not needed now
 

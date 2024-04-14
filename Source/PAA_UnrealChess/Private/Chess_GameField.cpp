@@ -146,7 +146,7 @@ FVector2D AChess_GameField::GetXYPositionByRelativeLocation(const FVector& Locat
 	return FVector2D(x,y);
 }
 
-auto* AChess_GameField::GetTileByPositionAndDirection(const FVector2D Position, const Chess_Direction Direction) const
+AChess_Tile* AChess_GameField::GetTileByPositionAndDirection(const FVector2D Position, const Chess_Direction Direction) const
 {
 	return TileMap[FVector2D(Position + Direction.DirectionVector)];
 }

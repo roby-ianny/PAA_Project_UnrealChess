@@ -29,7 +29,7 @@ public:
 	FVector2D FromPosition;
 	FVector2D ToPosition;
 
-	// virtual void Execute(AChess_GameField* GF);
+	// virtual void Execute(AChess_GameField* GF); meglio farlo fare direttamente la gamefield
 
 	Chess_Move();
 	~Chess_Move() = default; //provo ad appoggiarmi al distruttore di default
