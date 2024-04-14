@@ -13,5 +13,4 @@ UCLASS()
 class PAA_UNREALCHESS_API AChess_King : public AChess_Piece
 {
 	GENERATED_BODY()
-	
 };

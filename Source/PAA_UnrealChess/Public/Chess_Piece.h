@@ -22,10 +22,11 @@ public:
 	UFUNCTION()
 	void SelfDestroy();
 
-	// UFUNCTION()
-	// virtual void DiplayPossibleMoves();
-
+	UFUNCTION()
 	void SetDarkMaterial();
+
+	// Array che mostra le posizioni che può raggiungere il pezzo
+
 
 protected:
 	// Called when the game starts or when spawned
@@ -43,10 +44,7 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Components")
 	UMaterialInstance* DarkVariant;
 
-	/*
-	// (x,y) position
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	FVector2D Position; //Needed?
-	*/
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	bool HasMoved = false;
 
 };

@@ -33,10 +33,6 @@ void AChess_GameField::BeginPlay()
 
 void AChess_GameField::ResetField()
 {
-	for (AChess_Tile* Obj : TileArray) {
-		Obj->setTileStatus(NOT_ASSIGNED, ETileStatus::EMPTY);
-	}
-
 	//Sent a broadcast evento to registered objects, so them can also "reset"
 	// OnResetEvent.Broadcast();
 
@@ -53,11 +49,11 @@ void AChess_GameField::GenerateField()
 {
 	for (int32 x = 0; x < Size; x++) {
 		for (int32 y = 0; y < Size; y++) {
-			FVector Location = AChess_GameField::getRelativeLocationByXYPosition(x, y);
+			FVector Location = AChess_GameField::GetRelativeLocationByXYPosition(x, y);
 			AChess_Tile* Obj = GetWorld()->SpawnActor<AChess_Tile>(TileClass, Location, FRotator::ZeroRotator);
 			const float TileScale = TileSize / 100;
 			Obj->SetActorScale3D(FVector(TileScale, TileScale, 0.05));
-			Obj->setGridPosition(x, y);
+			Obj->SetGridPosition(x, y);
 			if ((x + y) % 2 == 0)
 				Obj->SetDarkMaterial();
 			TileArray.Add(Obj);
@@ -70,7 +66,7 @@ void AChess_GameField::SpawnPiece(TSubclassOf<AChess_Piece> PieceClass, int32 XP
 {
 	const float TileScale = TileSize / 100;
 
-	FVector PieceLocation = AChess_GameField::getRelativeLocationByXYPosition(XPosition, YPosition);
+	FVector PieceLocation = AChess_GameField::GetRelativeLocationByXYPosition(XPosition, YPosition);
 	PieceLocation.Z += 1;
 
 	AChess_Piece* NewPiece = GetWorld()->SpawnActor<AChess_Piece>(PieceClass, PieceLocation, FRotator::ZeroRotator);
@@ -78,6 +74,9 @@ void AChess_GameField::SpawnPiece(TSubclassOf<AChess_Piece> PieceClass, int32 XP
 
 	if (black)
 		NewPiece->SetDarkMaterial();
+
+	AChess_Tile* Tile = TileMap[FVector2D(XPosition, YPosition)]; // prendo la tile dalla tilemap 
+	Tile->SetOccupyingPiece(NewPiece);
 }
 
 
@@ -125,26 +124,31 @@ void AChess_GameField::SpawnPieces()
 	}
 }
 
-FVector2D AChess_GameField::getPosition(const FHitResult& Hit)
+FVector2D AChess_GameField::GetPosition(const FHitResult& Hit)
 {
-	return Cast<AChess_Tile>(Hit.GetActor())->getGridPosition();
+	return Cast<AChess_Tile>(Hit.GetActor())->GetGridPosition();
 }
 
-TArray<AChess_Tile*>& AChess_GameField::getTileArray()
+TArray<AChess_Tile*>& AChess_GameField::GetTileArray()
 {
 	return TileArray;
 }
 
-FVector AChess_GameField::getRelativeLocationByXYPosition(const int32 InX, const int32 InY) const
+FVector AChess_GameField::GetRelativeLocationByXYPosition(const int32 InX, const int32 InY) const
 {
 	return TileSize * FVector(InX,-InY,0);
 }
 
-FVector2D AChess_GameField::getXYPositionByRelativeLocation(const FVector& Location) const
+FVector2D AChess_GameField::GetXYPositionByRelativeLocation(const FVector& Location) const
 {
 	const double x = Location[0] / TileSize;
 	const double y = Location[1] / TileSize;
 	return FVector2D(x,y);
+}
+
+auto* AChess_GameField::GetTileByPositionAndDirection(const FVector2D Position, const Chess_Direction Direction) const
+{
+	return TileMap[FVector2D(Position + Direction.DirectionVector)];
 }
 
 /*

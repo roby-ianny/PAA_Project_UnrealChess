@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Chess_Direction.h"
 #include "Chess_Tile.h"
 #include "GameFramework/Actor.h"
 #include "Chess_Pawn.h"
@@ -95,17 +96,19 @@ public:
 	void SpawnPieces();
 
 	//Return a (x,y) position after clicking on a field tile
-	FVector2D getPosition(const FHitResult& Hit);
+	FVector2D GetPosition(const FHitResult& Hit);
 
 	//Return the array of tile pointers
-	TArray<AChess_Tile*>& getTileArray();
+	TArray<AChess_Tile*>& GetTileArray();
 
 	// return a relative position given (x,y) position
-	FVector getRelativeLocationByXYPosition(const int32 InX, const int32 InY) const;
+	FVector GetRelativeLocationByXYPosition(const int32 InX, const int32 InY) const;
 
 	// return (x,y) given a relative position
-	FVector2D getXYPositionByRelativeLocation(const FVector& Location) const;
+	FVector2D GetXYPositionByRelativeLocation(const FVector& Location) const;
 
+	// return tile position from actual position and direction
+	auto* GetTileByPositionAndDirection(const FVector2D Position, const Chess_Direction Direction) const;
 	// check if a position is a win position
 	// bool IsWinPosition(const FVector2D Position) const; //Not needed now
 

@@ -17,34 +17,17 @@ AChess_Tile::AChess_Tile()
 	SetRootComponent(Scene);
 	StaticMeshComponent->SetupAttachment(Scene);
 
-	Status = ETileStatus::EMPTY;
-	PlayerOwner = -1;
 	TileGridPosition = FVector2D(0, 0);
 
 }
 
-void AChess_Tile::setTileStatus(const int32 TileOwner, const ETileStatus TileStatus)
-{
-	PlayerOwner = TileOwner;
-	Status = TileStatus;
-}
 
-ETileStatus AChess_Tile::getTileStatus()
-{
-	return Status;
-}
-
-int32 AChess_Tile::getTileOwner()
-{
-	return PlayerOwner;
-}
-
-void AChess_Tile::setGridPosition(const double InX, const double InY)
+void AChess_Tile::SetGridPosition(const double InX, const double InY)
 {
 	TileGridPosition.Set(InX, InY);
 }
 
-FVector2D AChess_Tile::getGridPosition()
+FVector2D AChess_Tile::GetGridPosition()
 {
 	return TileGridPosition;
 }
@@ -52,6 +35,22 @@ FVector2D AChess_Tile::getGridPosition()
 void AChess_Tile::SetDarkMaterial()
 {
 	StaticMeshComponent->SetMaterial(0, DarkVariant);
+}
+
+void AChess_Tile::SetOccupyingPiece(AChess_Piece* Piece)
+{
+	if (Piece != nullptr)
+		OccupyingPiece = Piece;
+}
+
+void AChess_Tile::SetEmptyTile()
+{
+	OccupyingPiece = nullptr;
+}
+
+AChess_Piece* AChess_Tile::GetOccupyingPiece()
+{
+	return OccupyingPiece;
 }
 
 // Called when the game starts or when spawned

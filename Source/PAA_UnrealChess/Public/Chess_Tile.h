@@ -4,13 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Chess_Piece.h" 
 #include "Chess_Tile.generated.h"
-
-UENUM()
-enum class ETileStatus : uint8 {
-	EMPTY		UMETA(DisplayName = "Empty"),
-	OCCUPIED	UMETA(DisplayName = "Occupied"),
-};
 
 /* Come posso cambiare colore alla cella ?
 / https://forums.unrealengine.com/t/how-to-change-material-for-a-mesh-in-cpp/613186
@@ -24,22 +19,19 @@ public:
 	// Sets default values for this actor's properties
 	AChess_Tile();
 
-	//Set the player owner and the Tile Status
-	void setTileStatus(const int32 TileOwner, const ETileStatus TileStatus); //per ora mettiamo player owner, anche se forse sarebbe meglio mettere direttamente il pezzo
-
-	//get the tile status
-	ETileStatus getTileStatus();
-
-	// Get the tile owner
-	int32 getTileOwner(); //Anche qui vedremo cosa mettere, forse sarebbe più opportuno mettere il pezzo e il colore (per esempio wN (Cavallo Bianco))
-
 	// Set the (x,y) position
-	void setGridPosition(const double InX, const double InY);
+	void SetGridPosition(const double InX, const double InY);
 
 	// get the (x,y) position
-	FVector2D getGridPosition();
+	FVector2D GetGridPosition();
 
 	void SetDarkMaterial();
+
+	void SetEmptyTile();
+
+	void SetOccupyingPiece(AChess_Piece* Piece);
+
+	AChess_Piece* GetOccupyingPiece();
 
 protected:
 	// Called when the game starts or when spawned
@@ -54,15 +46,14 @@ protected:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Components")
 	UMaterialInstance* DarkVariant;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	ETileStatus Status;
-
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
-	int32 PlayerOwner;
-
 	// (x,y) position
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	FVector2D TileGridPosition;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	AChess_Piece* OccupyingPiece = nullptr; // indica quale pezzo occupa la tile, lo faccio in maniera generale, se ho nullptr allora la tile è vuota
+
+	// A differenza del TTT, ho eliminaot lo status e il playerowner, perchè si può fare tutto tramite occupying piece, il colore indica il proprietario e il nullptr indica se la tile è vuota
 
 // public:	// Le tiles non devono tickare
 	// Called every frame

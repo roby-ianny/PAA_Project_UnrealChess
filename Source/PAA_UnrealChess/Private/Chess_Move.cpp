@@ -1,4 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "Chess_King.h"
+#include "Chess_Move.h"
+
+Chess_Move::Chess_Move()
+{
+}
+
