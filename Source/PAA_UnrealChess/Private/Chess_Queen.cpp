@@ -5,5 +5,8 @@
 
 TArray<Chess_Move> AChess_Queen::ComputeMoves(FVector2D frompos, AChess_GameField* GF)
 {
-    return TArray<Chess_Move>();
+	TArray<Chess_Move> Moves;
+	for (FVector2D pos : MovePositionInDirs(frompos, Directions, GF))
+		Moves.Push(Chess_NormalMove(frompos, pos));
+	return Moves;
 }

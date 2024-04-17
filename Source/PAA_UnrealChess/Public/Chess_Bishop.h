@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "Chess_Piece.h"
-#include "Chess_Direction.h"
 #include "Chess_Bishop.generated.h"
 
 /**

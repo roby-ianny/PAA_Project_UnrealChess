@@ -14,6 +14,12 @@ class PAA_UNREALCHESS_API AChess_Rook : public AChess_Piece
 {
 	GENERATED_BODY()
 
+protected:
+	inline static const TArray<Chess_Direction> Directions = {
+		Up,
+		Down,
+		Left,
+		Right };
 public:
 	virtual TArray<Chess_Move> ComputeMoves(FVector2D frompos, AChess_GameField* GF) override;
 	
