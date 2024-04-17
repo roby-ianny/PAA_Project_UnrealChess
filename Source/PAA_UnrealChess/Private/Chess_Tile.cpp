@@ -12,7 +12,7 @@ AChess_Tile::AChess_Tile()
 	// template function that creates a components
 	Scene = CreateDefaultSubobject<USceneComponent>(TEXT("Scene")); //serve per vederlo nell'editor dei blueprint
 	StaticMeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("StaticMeshComponent"));
-
+	TileStatus = ETileStatus::EMPTY;
 	// every actor has a RootComponent that defines the transform in the World
 	SetRootComponent(Scene);
 	StaticMeshComponent->SetupAttachment(Scene);
@@ -39,12 +39,34 @@ void AChess_Tile::SetDarkMaterial()
 
 void AChess_Tile::SetOccupyingPiece(AChess_Piece* Piece)
 {
-	if (Piece != nullptr)
+	if (Piece != nullptr) {
 		OccupyingPiece = Piece;
+		switch (Piece->GetColor())
+		{
+			case 0:
+				TileStatus = ETileStatus::OCCUPIEDWHITE;
+				break;
+			case 1:
+				TileStatus = ETileStatus::OCCUPIEDBLACK;
+				break;
+			default:
+				TileStatus = ETileStatus::EMPTY;
+				break;
+		}
+	} else {
+		OccupyingPiece = nullptr;
+		TileStatus = ETileStatus::EMPTY;
+	}
+}
+
+ETileStatus AChess_Tile::GetTileStatus()
+{
+	return TileStatus;
 }
 
 void AChess_Tile::SetEmptyTile()
 {
+	TileStatus = ETileStatus::EMPTY;
 	OccupyingPiece = nullptr;
 }
 

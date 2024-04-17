@@ -2,6 +2,7 @@
 
 
 #include "Chess_Piece.h"
+#include "Chess_GameField.h"
 
 // Sets default values
 AChess_Piece::AChess_Piece()
@@ -25,11 +26,55 @@ void AChess_Piece::SetDarkMaterial()
 	color = 1;
 }
 
+int32 AChess_Piece::GetColor() const
+{
+	return color;
+}
+
+// Restituisce una array vuoto nel caso in cui non si usano i pezzi veri e propri
+TArray<Chess_Move> AChess_Piece::ComputeMoves(FVector2D frompos, AChess_GameField* GF)
+{
+	return TArray<Chess_Move>();
+}
+
 // Called when the game starts or when spawned
 void AChess_Piece::BeginPlay()
 {
 	Super::BeginPlay();
 	
+}
+
+TArray<FVector2D> AChess_Piece::MovePositionsInDir(FVector2D frompos, Chess_Direction direction, AChess_GameField* GF)
+{
+	TArray<FVector2D> ReachablePositions;
+	ETileStatus OpponentStatus;
+	if (color == 0)
+		OpponentStatus = ETileStatus::OCCUPIEDBLACK;
+	else
+		OpponentStatus = ETileStatus::OCCUPIEDWHITE;
+
+	for (FVector2D pos = frompos + direction.DirectionVector; GF->IsInside(pos); pos += direction.DirectionVector) {
+		ETileStatus Status = GF->TileMap[pos]->GetTileStatus();
+
+		if (Status == ETileStatus::EMPTY)
+			ReachablePositions.Push(pos);
+		else if (Status == OpponentStatus) {
+			ReachablePositions.Push(pos);
+			break;
+		} else
+			break;
+
+	};
+	return ReachablePositions;
+}
+
+// Useful for pieces that can move in multiple directions (Rook, Bishop, Queen)
+TArray<FVector2D> AChess_Piece::MovePositionInDirs(FVector2D frompos, TArray<Chess_Direction> dirs, AChess_GameField* GF)
+{
+	TArray<FVector2D> ReachablePositions;
+	for (Chess_Direction dir : dirs)
+		ReachablePositions += MovePositionsInDir(frompos, dir, GF);
+	return ReachablePositions;
 }
 
 

@@ -10,6 +10,15 @@
 /* Come posso cambiare colore alla cella ?
 / https://forums.unrealengine.com/t/how-to-change-material-for-a-mesh-in-cpp/613186
 */
+
+UENUM()
+enum class ETileStatus : uint8
+{
+	EMPTY UMETA(DisplayName = "Empty"),
+	OCCUPIEDBLACK UMETA(DisplayName = "Occupied by Black Piece"),
+	OCCUPIEDWHITE UMETA(DisplayName = "Occupied by White Piece")
+};
+
 UCLASS()
 class PAA_UNREALCHESS_API AChess_Tile : public AActor
 {
@@ -31,6 +40,8 @@ public:
 
 	void SetOccupyingPiece(AChess_Piece* Piece);
 
+	ETileStatus GetTileStatus();
+
 	AChess_Piece* GetOccupyingPiece();
 
 protected:
@@ -49,6 +60,10 @@ protected:
 	// (x,y) position
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	FVector2D TileGridPosition;
+
+	// indica lo stato della tile
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	ETileStatus TileStatus;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	AChess_Piece* OccupyingPiece = nullptr; // indica quale pezzo occupa la tile, lo faccio in maniera generale, se ho nullptr allora la tile è vuota

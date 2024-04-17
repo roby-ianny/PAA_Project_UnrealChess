@@ -13,4 +13,6 @@ UCLASS()
 class PAA_UNREALCHESS_API AChess_King : public AChess_Piece
 {
 	GENERATED_BODY()
+public:
+	virtual TArray<Chess_Move> ComputeMoves(FVector2D frompos, AChess_GameField* GF) override;
 };

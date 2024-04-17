@@ -151,6 +151,11 @@ AChess_Tile* AChess_GameField::GetTileByPositionAndDirection(const FVector2D Pos
 	return TileMap[FVector2D(Position + Direction.DirectionVector)];
 }
 
+bool AChess_GameField::IsInside(FVector2D position)
+{
+	return (position.X >= 0 && position.X < Size && position.Y >= 0 && position.Y < Size);
+}
+
 /*
 // Called every frame
 void AChess_GameField::Tick(float DeltaTime)

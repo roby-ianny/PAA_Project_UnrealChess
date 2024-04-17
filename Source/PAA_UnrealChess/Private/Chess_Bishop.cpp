@@ -3,3 +3,10 @@
 
 #include "Chess_Bishop.h"
 
+TArray<Chess_Move> AChess_Bishop::ComputeMoves(FVector2D frompos, AChess_GameField* GF)
+{
+    TArray<Chess_Move> Moves;
+	for (FVector2D pos : MovePositionInDirs(frompos, Directions, GF))
+		Moves.Push(Chess_NormalMove(frompos, pos));
+	return Moves;
+}

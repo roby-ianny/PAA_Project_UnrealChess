@@ -3,8 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Chess_Move.h"
 #include "GameFramework/Actor.h"
 #include "Chess_Piece.generated.h"
+
+// Forward Declarations per evitare problemi di dipendenze cicliche
+class AChess_GameField;
+class Chess_Direction;
 
 UCLASS()
 class PAA_UNREALCHESS_API AChess_Piece : public AActor
@@ -25,15 +30,23 @@ public:
 	UFUNCTION()
 	void SetDarkMaterial();
 
-	// Array che mostra le posizioni che può raggiungere il pezzo
+	UFUNCTION()
+	int32 GetColor() const;
 
+	// Array che mostra le posizioni che può raggiungere il pezzo
+	virtual TArray<Chess_Move> ComputeMoves(FVector2D frompos, AChess_GameField* GF);
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	TArray<FVector2D> MovePositionsInDir(FVector2D frompos, Chess_Direction direction, AChess_GameField* GF); // returns the possible moves in a given di
+
+	TArray<FVector2D> MovePositionInDirs(FVector2D frompos, TArray<Chess_Direction> dirs, AChess_GameField* GF);
+
+	// 0 = white, 1 = black
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
-	int32 color;
+	int32 color; 
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	USceneComponent* Scene;
@@ -46,5 +59,4 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	bool HasMoved = false;
-
 };

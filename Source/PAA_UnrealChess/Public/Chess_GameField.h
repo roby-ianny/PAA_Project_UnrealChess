@@ -32,7 +32,7 @@ public:
 	TMap<FVector2D, AChess_Tile*> TileMap;
 
 	/* Visto nel progetto del tris, a me non interessa il padding, lo metto nel caso volessi inserirlo in futuro
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly
 	float NormalizedCellPadding;
 	*/
 
@@ -110,6 +110,7 @@ public:
 	// return tile position from actual position and direction
 	AChess_Tile* GetTileByPositionAndDirection(const FVector2D Position, const Chess_Direction Direction) const;
 
+	bool IsInside(FVector2D position);
 	// Executes a Move?
 
 	// check if a position is a win position
