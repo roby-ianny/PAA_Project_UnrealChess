@@ -156,6 +156,11 @@ bool AChess_GameField::IsInside(FVector2D position)
 	return (position.X >= 0 && position.X < Size && position.Y >= 0 && position.Y < Size);
 }
 
+bool AChess_GameField::IsEmpty(FVector2D position)
+{
+	return TileMap[position]->GetTileStatus() == ETileStatus::EMPTY;
+}
+
 /*
 // Called every frame
 void AChess_GameField::Tick(float DeltaTime)

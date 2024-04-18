@@ -29,7 +29,7 @@ public:
 	void SelfDestroy();
 
 	UFUNCTION()
-	void SetDarkMaterial();
+	virtual void SetDarkMaterial();
 
 	UFUNCTION()
 	int32 GetColor() const;

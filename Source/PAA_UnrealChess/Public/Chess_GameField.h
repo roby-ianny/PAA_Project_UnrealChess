@@ -110,7 +110,11 @@ public:
 	// return tile position from actual position and direction
 	AChess_Tile* GetTileByPositionAndDirection(const FVector2D Position, const Chess_Direction Direction) const;
 
+	// Checks if the position is inside the board
 	bool IsInside(FVector2D position);
+
+	// Checks if the tile il empty
+	bool IsEmpty(FVector2D position);
 	// Executes a Move?
 
 	// check if a position is a win position
