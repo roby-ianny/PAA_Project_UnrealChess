@@ -32,6 +32,8 @@ protected:
 	//turn tracking
 	bool IsMyTurn = false;
 
+	bool PieceSelected = false;
+
 public:	
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;

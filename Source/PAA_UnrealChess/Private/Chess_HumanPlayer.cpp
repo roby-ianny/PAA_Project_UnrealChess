@@ -71,12 +71,22 @@ void AChess_HumanPlayer::OnLose()
 
 void AChess_HumanPlayer::OnClick()
 {
+	//Structure containing information about one hit of a trace, such as point of impact and surface normal at that point
 	FHitResult Hit = FHitResult(ForceInit);
 
 	GetWorld()->GetFirstPlayerController()->GetHitResultUnderCursor(ECollisionChannel::ECC_Pawn, true, Hit);
+	/* maybe i can "pass" trough the piece
 	if (Hit.bBlockingHit && IsMyTurn) { //if we hit something and it's our turn
-		// check if i hit a piece or a tile
+		// check if i hit a piece 
+		if(AChess_Piece* Piece = Cast<AChess_Piece>(Hit.GetActor())) {
+			// check if i hit a piece of my color
+			if (Piece->GetColor() == 0) {
+				if (!PieceSelected) {
+					// Piece->ComputeMoves();
+				}
+			}
 	}
+	*/
 }
 
 

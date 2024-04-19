@@ -161,10 +161,12 @@ bool AChess_GameField::IsEmpty(FVector2D position)
 	return TileMap[position]->GetTileStatus() == ETileStatus::EMPTY;
 }
 
-void AChess_GameField::HighlightTiles(TArray<FVector2D> Positions)
+// Highlights/DeHighlights all the tiles
+void AChess_GameField::HighlightTiles(TArray<FVector2D> Positions, bool ToHighlight)
 {
-	// TODO 
-	//
+	for (FVector2D Pos : Positions){
+			TileMap[Pos]->Highlight(ToHighlight);
+		}
 }
 
 /*

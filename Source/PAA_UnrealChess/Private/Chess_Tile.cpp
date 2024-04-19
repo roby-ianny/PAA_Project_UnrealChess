@@ -75,6 +75,15 @@ AChess_Piece* AChess_Tile::GetOccupyingPiece()
 	return OccupyingPiece;
 }
 
+void AChess_Tile::Highlight(bool highlight)
+{
+	if (highlight)
+		StaticMeshComponent->SetOverlayMaterial(HighlightOverlay);
+	else
+		StaticMeshComponent->SetOverlayMaterial(nullptr);
+
+}
+
 // Called when the game starts or when spawned
 void AChess_Tile::BeginPlay()
 {

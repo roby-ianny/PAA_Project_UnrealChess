@@ -40,6 +40,8 @@ public:
 
 	AChess_Piece* GetOccupyingPiece();
 
+	void Highlight(bool highlight);
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -52,6 +54,9 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Components")
 	UMaterialInstance* DarkVariant;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Components")
+	UMaterialInterface* HighlightOverlay;
 
 	// (x,y) position
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
