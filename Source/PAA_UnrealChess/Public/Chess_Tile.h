@@ -7,10 +7,6 @@
 #include "Chess_Piece.h" 
 #include "Chess_Tile.generated.h"
 
-/* Come posso cambiare colore alla cella ?
-/ https://forums.unrealengine.com/t/how-to-change-material-for-a-mesh-in-cpp/613186
-*/
-
 UENUM()
 enum class ETileStatus : uint8
 {

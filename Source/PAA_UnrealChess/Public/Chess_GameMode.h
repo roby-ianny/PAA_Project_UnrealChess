@@ -36,7 +36,7 @@ public:
 
 	// Type safety for spawning the gamefield
 	UPROPERTY(EditDefaultsOnly)
-		TSubclassOf<AChess_GameField> GameFieldClass;
+	TSubclassOf<AChess_GameField> GameFieldClass;
 
 	// field size, needed?
 

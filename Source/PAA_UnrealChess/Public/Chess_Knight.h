@@ -13,7 +13,15 @@ UCLASS()
 class PAA_UNREALCHESS_API AChess_Knight : public AChess_Piece
 {
 	GENERATED_BODY()
+
+protected:
+	static TArray<FVector2D> PotentialPositions(FVector2D frompos);
+
+	TArray<FVector2D> MovePositions(FVector2D frompos, AChess_GameField* GF);
+
 public:
 	virtual TArray<Chess_Move> ComputeMoves(FVector2D frompos, AChess_GameField* GF) override;
 	
+
+
 };

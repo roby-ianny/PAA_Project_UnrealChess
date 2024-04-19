@@ -67,7 +67,7 @@ void AChess_GameField::SpawnPiece(TSubclassOf<AChess_Piece> PieceClass, int32 XP
 	const float TileScale = TileSize / 100;
 
 	FVector PieceLocation = AChess_GameField::GetRelativeLocationByXYPosition(XPosition, YPosition);
-	PieceLocation.Z += 1;
+	PieceLocation.Z += 2; // 2 because the tile is a Z = 0 and the higlights at Z = 1
 
 	AChess_Piece* NewPiece = GetWorld()->SpawnActor<AChess_Piece>(PieceClass, PieceLocation, FRotator::ZeroRotator);
 	NewPiece->SetActorScale3D(FVector(TileScale, TileScale, 0.05));
@@ -159,6 +159,12 @@ bool AChess_GameField::IsInside(FVector2D position)
 bool AChess_GameField::IsEmpty(FVector2D position)
 {
 	return TileMap[position]->GetTileStatus() == ETileStatus::EMPTY;
+}
+
+void AChess_GameField::HighlightTiles(TArray<FVector2D> Positions)
+{
+	// TODO 
+	//
 }
 
 /*

@@ -31,11 +31,6 @@ public:
 	UPROPERTY(Transient)
 	TMap<FVector2D, AChess_Tile*> TileMap;
 
-	/* Visto nel progetto del tris, a me non interessa il padding, lo metto nel caso volessi inserirlo in futuro
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly
-	float NormalizedCellPadding;
-	*/
-
 	static const int32 NOT_ASSIGNED = -1;
 
 	// Setting OnResetEvent call 
@@ -116,6 +111,8 @@ public:
 	// Checks if the tile il empty
 	bool IsEmpty(FVector2D position);
 	// Executes a Move?
+
+	void HighlightTiles(TArray<FVector2D> Positions);
 
 	// check if a position is a win position
 	// bool IsWinPosition(const FVector2D Position) const; //Not needed now
