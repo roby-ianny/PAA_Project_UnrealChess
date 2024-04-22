@@ -161,6 +161,26 @@ bool AChess_GameField::IsEmpty(FVector2D position)
 	return TileMap[position]->GetTileStatus() == ETileStatus::EMPTY;
 }
 
+// color = 0 -> white, color = 1 -> black
+TArray<AChess_Tile*> AChess_GameField::GetTilesWithPlayerPieces(int32 playercolor)
+{
+	TArray<AChess_Tile*> playerpieces;
+
+	ETileStatus PlayerColor;
+	if (playercolor == 0)
+		PlayerColor = ETileStatus::OCCUPIEDWHITE;
+	else
+		PlayerColor = ETileStatus::OCCUPIEDBLACK;
+
+	for (AChess_Tile* Tile : TileArray)
+	{
+		if (Tile->GetTileStatus() == PlayerColor)
+			playerpieces.Emplace(Tile);
+	}
+
+	return playerpieces;
+}
+
 // Highlights/DeHighlights all the tiles
 void AChess_GameField::HighlightTiles(TArray<Chess_Move> Moves, bool ToHighlight)
 {

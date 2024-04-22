@@ -39,8 +39,34 @@ void AChess_CPURandom::OnTurn()
 
 	FTimerHandle TimerHandle; //lambda function per il timer
 
-	//Todo piece logic
-	
+	TArray<AChess_Tile*> CPUTiles = GameField->GetTilesWithPlayerPieces(1);
+
+	AChess_Tile* ChosenTile;
+	TArray<Chess_Move> PossibleMoves;
+	AChess_Piece* PieceToMove;
+
+	// select random tile
+	if (CPUTiles.Num() > 0)
+	{
+		// picks a tile that has a piece that can move
+		do{
+			// picks a random tile
+			int32 RandomIndex = FMath::RandRange(0, CPUTiles.Num() - 1);
+			ChosenTile = CPUTiles[RandomIndex];
+			// picks the piece and check the possible moves
+			PieceToMove = ChosenTile->GetOccupyingPiece();
+			PossibleMoves = PieceToMove->ComputeMoves(ChosenTile->GetGridPosition(), GameField);
+		} while (PossibleMoves.Num() == 0); // exits if there are possible moves
+
+		// picks a random index for chosing the move
+		int32 RandomIndex = FMath::RandRange(0,PossibleMoves.Num() - 1);
+
+		// executes the move
+		AChess_GameMode* GameMode = Cast<AChess_GameMode>(GetWorld()->GetAuthGameMode());
+		GameMode->ExecuteMove(PieceToMove, PossibleMoves[RandomIndex]);
+	} else
+		OnLose();
+
 }
 
 void AChess_CPURandom::OnWin()

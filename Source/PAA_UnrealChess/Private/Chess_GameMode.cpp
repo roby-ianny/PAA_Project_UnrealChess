@@ -62,7 +62,7 @@ void AChess_GameMode::ChoosePlayerAndStartGame()
 
 void AChess_GameMode::ExecuteMove(AChess_Piece* Piece, Chess_Move Move)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Doing a move"));
+	// GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Doing a move"));
 	// I have to:
 	// Remove the old tile reference to that piece and edit the tile status to empty
 	GField->TileMap[Move.FromPosition]->SetEmptyTile();
@@ -79,12 +79,12 @@ void AChess_GameMode::ExecuteMove(AChess_Piece* Piece, Chess_Move Move)
 	// I have to add vertical offset to avoid collisions
 	
 	Piece->SetActorLocationAndRotation(NewPosition,FRotator::ZeroRotator );
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Piece Moved!"));
+	// GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Piece Moved!"));
 	// Edit the tile status to occupied by the new piece and add the reference
 	GField->TileMap[Move.ToPosition]->SetOccupyingPiece(Piece);			// Sets the new occupying piece
 	
-	TurnNextPlayer(); 
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("EndOfTurn"));
+	TurnNextPlayer(); 
 }
 
 int32 AChess_GameMode::GetNextPlayer(int32 Player)

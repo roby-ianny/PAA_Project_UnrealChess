@@ -72,6 +72,7 @@ void AChess_HumanPlayer::SetupPlayerInputComponent(UInputComponent* PlayerInputC
 void AChess_HumanPlayer::OnTurn()
 {
 	IsMyTurn = true;
+	PieceSelected = false; // just to be sure
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Your Turn"));
 	GameInstance->SetTurnMessage(TEXT("Your Turn"));
 	MoveCache.Empty(); //deletes the previous turn movecache
@@ -120,10 +121,10 @@ void AChess_HumanPlayer::OnClick()
 				AChess_GameMode* GameMode = Cast<AChess_GameMode>(GetWorld()->GetAuthGameMode());
 				Chess_Move MoveToExecute = GetMoveFromSelectedPosition(Tile->GetGridPosition());
 				AChess_Piece* PieceToMove = GameField->TileMap[MoveToExecute.FromPosition]->GetOccupyingPiece();
-				GameMode->ExecuteMove(PieceToMove, MoveToExecute);
 				GameField->HighlightTiles(MoveCache, false);
 				MoveCache.Empty();
 				IsMyTurn = false;
+				GameMode->ExecuteMove(PieceToMove, MoveToExecute);
 				
 			} else //if I click on a non-highlited tile
 				GameField->HighlightTiles(MoveCache, false);
