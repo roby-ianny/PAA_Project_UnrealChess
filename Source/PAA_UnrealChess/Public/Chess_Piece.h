@@ -13,6 +13,17 @@
 class AChess_GameField;
 class Chess_Direction;
 
+UENUM()
+enum class EPieceType : uint8
+{
+	KING UMETA(DisplayName = "King"),
+	QUEEN UMETA(DisplayName = "Queen"),
+	BISHOP UMETA(DisplayName = "Bishop"),
+	ROOK UMETA(DisplayName = "Rook"),
+	KNIGHT UMETA(DisplayName = "Knight"),
+	PAWN UMETA(DisplayName = "Pawn")
+};
+
 UCLASS()
 class PAA_UNREALCHESS_API AChess_Piece : public AActor
 {
@@ -35,8 +46,12 @@ public:
 	UFUNCTION()
 	int32 GetColor() const;
 
+	EPieceType GetType() const { return Type; } // returns the type of the piece
+
 	// Array che mostra le posizioni che può raggiungere il pezzo
 	virtual TArray<Chess_Move> ComputeMoves(FVector2D frompos, AChess_GameField* GF);
+
+	virtual bool CanCaptureOpponentKing(FVector2D frompos, AChess_GameField* GameField);
 
 protected:
 	// Called when the game starts or when spawned
@@ -61,4 +76,8 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	bool HasMoved = false;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	// This is useful for checkstate checking, pawn promotions, minimax evaluations, etc
+	EPieceType Type;
 };

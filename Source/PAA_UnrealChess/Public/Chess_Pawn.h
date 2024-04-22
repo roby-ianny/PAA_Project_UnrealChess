@@ -29,4 +29,6 @@ public:
 	virtual TArray<Chess_Move> ComputeMoves(FVector2D frompos, AChess_GameField* GF) override;
 
 	virtual void SetDarkMaterial() override;
+
+	AChess_Pawn() { Type = EPieceType::PAWN; }
 };

@@ -23,4 +23,6 @@ protected:
 public:
 
 	virtual TArray<Chess_Move> ComputeMoves(FVector2D frompos, AChess_GameField* GF) override;
+
+	AChess_Knight() { Type = EPieceType::KNIGHT; }
 };
