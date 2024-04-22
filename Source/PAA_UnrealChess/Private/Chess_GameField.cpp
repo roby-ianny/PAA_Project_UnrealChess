@@ -67,7 +67,7 @@ void AChess_GameField::SpawnPiece(TSubclassOf<AChess_Piece> PieceClass, int32 XP
 	const float TileScale = TileSize / 100;
 
 	FVector PieceLocation = AChess_GameField::GetRelativeLocationByXYPosition(XPosition, YPosition);
-	PieceLocation.Z += 2; // 2 because the tile is a Z = 0 and the higlights at Z = 1
+	PieceLocation.Z += 1; // 1 because the tile is a Z = 0
 
 	AChess_Piece* NewPiece = GetWorld()->SpawnActor<AChess_Piece>(PieceClass, PieceLocation, FRotator::ZeroRotator);
 	NewPiece->SetActorScale3D(FVector(TileScale, TileScale, 0.05));
@@ -136,13 +136,13 @@ TArray<AChess_Tile*>& AChess_GameField::GetTileArray()
 
 FVector AChess_GameField::GetRelativeLocationByXYPosition(const int32 InX, const int32 InY) const
 {
-	return TileSize * FVector(InX,-InY,0);
+	return TileSize * FVector(InX, -InY,0);
 }
 
 FVector2D AChess_GameField::GetXYPositionByRelativeLocation(const FVector& Location) const
 {
-	const double x = Location[0] / TileSize;
-	const double y = Location[1] / TileSize;
+	const double x = (Location[0] / TileSize);
+	const double y = - (Location[1] / TileSize);
 	return FVector2D(x,y);
 }
 
@@ -153,7 +153,7 @@ AChess_Tile* AChess_GameField::GetTileByPositionAndDirection(const FVector2D Pos
 
 bool AChess_GameField::IsInside(FVector2D position)
 {
-	return (position.X >= 0 && position.X < Size && position.Y >= 0 && position.Y < Size);
+	return ((position.X >= 0 && position.X < Size) && (position.Y >= 0 && position.Y < Size));
 }
 
 bool AChess_GameField::IsEmpty(FVector2D position)
@@ -162,11 +162,19 @@ bool AChess_GameField::IsEmpty(FVector2D position)
 }
 
 // Highlights/DeHighlights all the tiles
-void AChess_GameField::HighlightTiles(TArray<FVector2D> Positions, bool ToHighlight)
+void AChess_GameField::HighlightTiles(TArray<Chess_Move> Moves, bool ToHighlight)
 {
-	for (FVector2D Pos : Positions){
-			TileMap[Pos]->Highlight(ToHighlight);
+	for (Chess_Move Move : Moves){
+			TileMap[Move.ToPosition]->Highlight(ToHighlight);
 		}
+}
+
+void AChess_GameField::DeHighlightAll()
+{
+	for (AChess_Tile* Tile : TileArray)
+	{
+		Tile->Highlight(false);
+	}
 }
 
 /*

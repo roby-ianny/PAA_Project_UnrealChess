@@ -6,6 +6,8 @@
 #include "UObject/Interface.h"
 #include "Chess_PlayerInterface.generated.h"
 
+class AChess_GameField; //forward declaration
+
 // This class does not need to be modified.
 UINTERFACE(MinimalAPI)
 class UChess_PlayerInterface : public UInterface
@@ -24,6 +26,7 @@ class PAA_UNREALCHESS_API IChess_PlayerInterface
 public:
 	int32 PlayerNumber; 
 	int32 color;
+	AChess_GameField* GameField;
 
 	virtual void OnTurn() {}; 
 	virtual void OnWin() {};

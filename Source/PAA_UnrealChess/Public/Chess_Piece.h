@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Chess_Move.h"
+#include "Chess_NormalMove.h"
 #include "Chess_Direction.h"
 #include "GameFramework/Actor.h"
 #include "Chess_Piece.generated.h"

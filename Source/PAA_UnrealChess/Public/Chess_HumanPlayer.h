@@ -6,6 +6,7 @@
 #include "GameFramework/Pawn.h"
 #include "Chess_GameInstance.h"
 #include "Chess_PlayerInterface.h"
+#include "Chess_Move.h"
 #include "Camera/CameraComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "Chess_HumanPlayer.generated.h"
@@ -33,6 +34,13 @@ protected:
 	bool IsMyTurn = false;
 
 	bool PieceSelected = false;
+
+	TArray<Chess_Move> MoveCache;
+
+	// Simple function to check if a Tile is in the movecache
+	bool IsInMoveCache(FVector2D TilePosition);
+
+	Chess_Move GetMoveFromSelectedPosition(FVector2D TilePosition);
 
 public:	
 	// Called every frame

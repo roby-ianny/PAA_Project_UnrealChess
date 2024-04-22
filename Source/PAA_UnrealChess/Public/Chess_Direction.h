@@ -15,7 +15,7 @@ public:
 	FVector2D DirectionVector;
 
 	Chess_Direction();
-	Chess_Direction(int32 row, int32 col);
+	Chess_Direction(double deltax, double deltay);
 	Chess_Direction operator+(const Chess_Direction& other) const;
 	Chess_Direction operator*(int32 scale) const;
 	~Chess_Direction();
@@ -23,8 +23,8 @@ public:
 };
 
 // Direzioni predefinite per il movimento nella board
-const static Chess_Direction Up = Chess_Direction(1, 0);
-const static Chess_Direction Down = Chess_Direction(-1, 0);
+const static Chess_Direction Up = Chess_Direction(0, 1);
+const static Chess_Direction Down = Chess_Direction(0, -1);
 const static Chess_Direction Left = Chess_Direction(-1, 0);
 const static Chess_Direction Right = Chess_Direction(1, 0);
 // Direzioni per il movimento in diagonale

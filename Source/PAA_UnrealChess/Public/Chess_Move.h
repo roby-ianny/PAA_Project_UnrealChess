@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-
 /**
  * 
  */
@@ -11,6 +10,7 @@
 UENUM()
 enum class EMoveType : uint8
 {
+	None,
 	Normal,
 	PawnPromotion,
 	DowblePawn,
@@ -34,9 +34,4 @@ public:
 	~Chess_Move() = default; //provo ad appoggiarmi al distruttore di default
 };
 
-class PAA_UNREALCHESS_API Chess_NormalMove : public Chess_Move
-{
-public:
-	Chess_NormalMove(FVector2D From, FVector2D To);
-};
 

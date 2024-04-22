@@ -32,10 +32,12 @@ int32 AChess_Piece::GetColor() const
 }
 
 // Restituisce una array vuoto nel caso in cui non si usano i pezzi veri e propri
+
 TArray<Chess_Move> AChess_Piece::ComputeMoves(FVector2D frompos, AChess_GameField* GF)
 {
 	return TArray<Chess_Move>();
 }
+
 
 // Called when the game starts or when spawned
 void AChess_Piece::BeginPlay()

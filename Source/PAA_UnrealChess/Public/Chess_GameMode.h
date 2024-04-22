@@ -38,20 +38,9 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<AChess_GameField> GameFieldClass;
 
-	// field size, needed?
-
 	// Reference to GameField object
 	UPROPERTY(VisibleAnywhere)
 		AChess_GameField* GField;
-
-	// Casting of all the chess pieces, something like this
-	/*
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-		TSubclassOf<AActor> SignXActor;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-		TSubclassOf<AActor> SignOActor;
-	*/
 
 	AChess_GameMode();
 
@@ -61,8 +50,8 @@ public:
 	// called at the start of the game
 	void ChoosePlayerAndStartGame();
 
-	// set the cell sign and the position 
-	//  SetCellSign(const int32 PlayerNumber, const FVector& SpawnPosition);
+	// executes a move
+	void ExecuteMove(AChess_Piece* Piece, Chess_Move Move);
 
 	// get the next player index
 	int32 GetNextPlayer(int32 Player);

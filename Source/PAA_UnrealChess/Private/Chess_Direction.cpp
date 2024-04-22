@@ -7,9 +7,9 @@ Chess_Direction::Chess_Direction()
 {
 }
 
-Chess_Direction::Chess_Direction(int32 row, int32 col)
+Chess_Direction::Chess_Direction(double deltax, double deltay)
 {
-	DirectionVector = FVector2D(row, col);
+	DirectionVector = FVector2D(deltax, deltay);
 }
 
 Chess_Direction Chess_Direction::operator+(const Chess_Direction& other) const{

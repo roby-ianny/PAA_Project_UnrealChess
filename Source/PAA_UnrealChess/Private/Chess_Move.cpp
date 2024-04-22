@@ -5,11 +5,5 @@
 
 Chess_Move::Chess_Move()
 {
-}
-
-Chess_NormalMove::Chess_NormalMove(FVector2D From, FVector2D To)
-{
-	Type = EMoveType::Normal;
-	FromPosition = From;
-	ToPosition = To;
-}
+	Type = EMoveType::None;
+};

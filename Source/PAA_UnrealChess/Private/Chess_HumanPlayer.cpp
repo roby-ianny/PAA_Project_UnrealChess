@@ -1,12 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
 #include "Chess_HumanPlayer.h"
 #include "Chess_GameField.h"
 #include "Chess_GameMode.h"
 #include "Components/InputComponent.h"
 #include "EnhancedInputComponent.h"
 #include "EnhancedInputSubsystems.h"
+
 
 // Sets default values
 AChess_HumanPlayer::AChess_HumanPlayer()
@@ -35,6 +35,26 @@ void AChess_HumanPlayer::BeginPlay()
 	
 }
 
+bool AChess_HumanPlayer::IsInMoveCache(FVector2D TilePosition)
+{
+	for (Chess_Move Move : MoveCache) {
+		if (TilePosition == Move.ToPosition)
+			return true;
+	}
+	return false;
+}
+
+Chess_Move AChess_HumanPlayer::GetMoveFromSelectedPosition(FVector2D TilePosition)
+{
+	for (Chess_Move Move : MoveCache) {
+		if (TilePosition == Move.ToPosition)
+			return Move;
+	}
+	// maybe an error report should be displayed
+	return Chess_Move();
+}
+
+
 // Called every frame
 void AChess_HumanPlayer::Tick(float DeltaTime)
 {
@@ -54,6 +74,7 @@ void AChess_HumanPlayer::OnTurn()
 	IsMyTurn = true;
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Your Turn"));
 	GameInstance->SetTurnMessage(TEXT("Your Turn"));
+	MoveCache.Empty(); //deletes the previous turn movecache
 }
 
 void AChess_HumanPlayer::OnWin()
@@ -73,20 +94,41 @@ void AChess_HumanPlayer::OnClick()
 {
 	//Structure containing information about one hit of a trace, such as point of impact and surface normal at that point
 	FHitResult Hit = FHitResult(ForceInit);
-
 	GetWorld()->GetFirstPlayerController()->GetHitResultUnderCursor(ECollisionChannel::ECC_Pawn, true, Hit);
-	/* maybe i can "pass" trough the piece
-	if (Hit.bBlockingHit && IsMyTurn) { //if we hit something and it's our turn
-		// check if i hit a piece 
-		if(AChess_Piece* Piece = Cast<AChess_Piece>(Hit.GetActor())) {
-			// check if i hit a piece of my color
-			if (Piece->GetColor() == 0) {
-				if (!PieceSelected) {
-					// Piece->ComputeMoves();
+	//if we hit something and it's our turn
+	if (Hit.bBlockingHit && IsMyTurn) {
+		// check if i hit a tile 
+		if (AChess_Tile* Tile = Cast<AChess_Tile>(Hit.GetActor())) {
+			// Checks if the tile i occupied
+			if (Tile->GetTileStatus() == ETileStatus::OCCUPIEDWHITE) {
+
+				// If a piece was already selected it de-highlights the tiles
+				if (PieceSelected == true)
+					GameField->HighlightTiles(MoveCache, false);
+				else
+					PieceSelected = true;
+
+				// Compute moves of the selected piece
+				MoveCache = Tile->GetOccupyingPiece()->ComputeMoves(Tile->GetGridPosition(), GameField);
+				if (MoveCache.Num() == 0) {
+					GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("You can't move this piece!"));
 				}
-			}
+				GameField->HighlightTiles(MoveCache, true);
+			} else if (PieceSelected == true && IsInMoveCache(Tile->GetGridPosition())) {
+				// ATTT_GameMode* GameMode = Cast<ATTT_GameMode>(GetWorld()->GetAuthGameMode()); //Faccio il casting, in teoria avrei dovuto utilizzare "isvalid" 
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Executing a move!"));
+				AChess_GameMode* GameMode = Cast<AChess_GameMode>(GetWorld()->GetAuthGameMode());
+				Chess_Move MoveToExecute = GetMoveFromSelectedPosition(Tile->GetGridPosition());
+				AChess_Piece* PieceToMove = GameField->TileMap[MoveToExecute.FromPosition]->GetOccupyingPiece();
+				GameMode->ExecuteMove(PieceToMove, MoveToExecute);
+				GameField->HighlightTiles(MoveCache, false);
+				MoveCache.Empty();
+				IsMyTurn = false;
+				
+			} else //if I click on a non-highlited tile
+				GameField->HighlightTiles(MoveCache, false);
+		}
 	}
-	*/
 }
 
 

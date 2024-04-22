@@ -22,4 +22,19 @@ void AChess_PlayerController::BeginPlay()
 
 void AChess_PlayerController::SetupInputComponent()
 {
+	Super::SetupInputComponent();
+
+	if (UEnhancedInputComponent* EnhancedInputComponent = CastChecked<UEnhancedInputComponent>(InputComponent))
+	{
+		EnhancedInputComponent->BindAction(ClickAction, ETriggerEvent::Triggered, this, &AChess_PlayerController::ClickOnGrid);
+	}
+}
+
+void AChess_PlayerController::ClickOnGrid()
+{
+	const auto HumanPlayer = Cast<AChess_HumanPlayer>(GetPawn()); //Prendo lo human player in questo modo perché collegato al pawn (quindi serve il casting)
+	if (IsValid(HumanPlayer))		//IsValid mi controlla che il casting sia avvenuto correttamente 
+	{
+		HumanPlayer->OnClick();		// Chiama la funzione OnClick
+	}
 }

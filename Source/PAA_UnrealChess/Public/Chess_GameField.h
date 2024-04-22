@@ -112,7 +112,9 @@ public:
 	bool IsEmpty(FVector2D position);
 	// Executes a Move?
 
-	void HighlightTiles(TArray<FVector2D> Positions, bool ToHighlight);
+	void HighlightTiles(TArray<Chess_Move> Moves, bool ToHighlight);
+
+	void DeHighlightAll();
 
 	// check if a position is a win position
 	// bool IsWinPosition(const FVector2D Position) const; //Not needed now

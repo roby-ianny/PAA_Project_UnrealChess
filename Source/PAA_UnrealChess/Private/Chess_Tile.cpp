@@ -39,23 +39,27 @@ void AChess_Tile::SetDarkMaterial()
 
 void AChess_Tile::SetOccupyingPiece(AChess_Piece* Piece)
 {
-	if (Piece != nullptr) {
-		OccupyingPiece = Piece;
-		switch (Piece->GetColor())
-		{
-			case 0:
-				TileStatus = ETileStatus::OCCUPIEDWHITE;
-				break;
-			case 1:
-				TileStatus = ETileStatus::OCCUPIEDBLACK;
-				break;
-			default:
-				TileStatus = ETileStatus::EMPTY;
-				break;
-		}
-	} else {
+	// Destroy the old piece if needed
+	if (TileStatus != ETileStatus::EMPTY) {
+		// This is needed to guarantee consistency
+		AChess_Piece* PieceToDestroy = GetOccupyingPiece();
 		OccupyingPiece = nullptr;
-		TileStatus = ETileStatus::EMPTY;
+		PieceToDestroy->SelfDestroy();
+	}
+
+	// Sets the new Piece
+	OccupyingPiece = Piece;
+	switch (Piece->GetColor())
+	{
+		case 0:
+			TileStatus = ETileStatus::OCCUPIEDWHITE;
+			break;
+		case 1:
+			TileStatus = ETileStatus::OCCUPIEDBLACK;
+			break;
+		default:
+			TileStatus = ETileStatus::EMPTY;
+			break;
 	}
 }
 
@@ -66,6 +70,7 @@ ETileStatus AChess_Tile::GetTileStatus()
 
 void AChess_Tile::SetEmptyTile()
 {
+	// In both cases this is needed
 	TileStatus = ETileStatus::EMPTY;
 	OccupyingPiece = nullptr;
 }

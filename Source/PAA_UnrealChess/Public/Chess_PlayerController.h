@@ -29,7 +29,7 @@ class PAA_UNREALCHESS_API AChess_PlayerController : public APlayerController
 		UPROPERTY(EditAnywhere, Category = Input)
 		UInputAction* ClickAction;
 
-		// void ClickOnGrid(); is correct for chess?
+		void ClickOnGrid(); 
 
 protected:
 	// Overriding delle funzioni dell'engine

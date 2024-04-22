@@ -13,6 +13,7 @@ UCLASS()
 class PAA_UNREALCHESS_API AChess_Pawn : public AChess_Piece
 {
 	GENERATED_BODY()
+
 protected:
 	Chess_Direction forward = Up;
 
