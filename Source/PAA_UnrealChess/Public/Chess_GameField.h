@@ -119,14 +119,17 @@ public:
 
 	void DeHighlightAll();
 
-	// check if a position is a win position
-	// bool IsWinPosition(const FVector2D Position) const; //Not needed now
-	
-	// checking if is a valid field position
-	// inline bool IsValidPosition(const FVector2D Position) const; //Not needed now
+	bool IsInCheck(int32 playercolor);
 
-	// get a line given a begin and end positions
-	// TArray<int32> GetLine(const FVector2D Begin, const FVector2D End) const; maybe needed for rook and bishop
+	virtual void ExecuteMove(AChess_Piece* Piece, Chess_Move Move);
+
+	/*
+	  PieceToMove is the piece to effectively move
+	  Move is the move to do/undo
+	  undo = true -> undo the move, undo = false -> do the move
+	  CapturedPiece in case of do is needed to save the captured piece for later, in case of undo it places back the captured piece
+	*/
+	virtual void ExecuteVirtualMove(AChess_Piece* PieceToMove, Chess_Move Move, AChess_Piece*& CapturedPiece, bool& oldhasmoved, bool undo = false);
 
 /*
 public:	

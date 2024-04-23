@@ -101,6 +101,7 @@ void AChess_HumanPlayer::OnClick()
 		// check if i hit a tile 
 		if (AChess_Tile* Tile = Cast<AChess_Tile>(Hit.GetActor())) {
 			// Checks if the tile i occupied
+			AChess_GameMode* GameMode = Cast<AChess_GameMode>(GetWorld()->GetAuthGameMode());
 			if (Tile->GetTileStatus() == ETileStatus::OCCUPIEDWHITE) {
 
 				// If a piece was already selected it de-highlights the tiles
@@ -111,6 +112,7 @@ void AChess_HumanPlayer::OnClick()
 
 				// Compute moves of the selected piece
 				MoveCache = Tile->GetOccupyingPiece()->ComputeMoves(Tile->GetGridPosition(), GameField);
+				MoveCache = GameMode->FilterLegalMoves(MoveCache);
 				if (MoveCache.Num() == 0) {
 					GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("You can't move this piece!"));
 				}
@@ -118,7 +120,6 @@ void AChess_HumanPlayer::OnClick()
 			} else if (PieceSelected == true && IsInMoveCache(Tile->GetGridPosition())) {
 				// ATTT_GameMode* GameMode = Cast<ATTT_GameMode>(GetWorld()->GetAuthGameMode()); //Faccio il casting, in teoria avrei dovuto utilizzare "isvalid" 
 				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Executing a move!"));
-				AChess_GameMode* GameMode = Cast<AChess_GameMode>(GetWorld()->GetAuthGameMode());
 				Chess_Move MoveToExecute = GetMoveFromSelectedPosition(Tile->GetGridPosition());
 				AChess_Piece* PieceToMove = GameField->TileMap[MoveToExecute.FromPosition]->GetOccupyingPiece();
 				GameField->HighlightTiles(MoveCache, false);

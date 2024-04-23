@@ -48,6 +48,7 @@ void AChess_CPURandom::OnTurn()
 	// select random tile
 	if (CPUTiles.Num() > 0)
 	{
+		AChess_GameMode* GameMode = Cast<AChess_GameMode>(GetWorld()->GetAuthGameMode());
 		// picks a tile that has a piece that can move
 		do{
 			// picks a random tile
@@ -56,13 +57,13 @@ void AChess_CPURandom::OnTurn()
 			// picks the piece and check the possible moves
 			PieceToMove = ChosenTile->GetOccupyingPiece();
 			PossibleMoves = PieceToMove->ComputeMoves(ChosenTile->GetGridPosition(), GameField);
+			PossibleMoves = GameMode->FilterLegalMoves(PossibleMoves);
 		} while (PossibleMoves.Num() == 0); // exits if there are possible moves
 
 		// picks a random index for chosing the move
 		int32 RandomIndex = FMath::RandRange(0,PossibleMoves.Num() - 1);
 
 		// executes the move
-		AChess_GameMode* GameMode = Cast<AChess_GameMode>(GetWorld()->GetAuthGameMode());
 		GameMode->ExecuteMove(PieceToMove, PossibleMoves[RandomIndex]);
 	} else
 		OnLose();

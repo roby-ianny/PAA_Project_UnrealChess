@@ -31,4 +31,6 @@ public:
 	virtual void SetDarkMaterial() override;
 
 	AChess_Pawn() { Type = EPieceType::PAWN; }
+
+	virtual bool CanCaptureOpponentKing(FVector2D frompos, AChess_GameField* GameField) override;
 };

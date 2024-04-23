@@ -62,26 +62,7 @@ void AChess_GameMode::ChoosePlayerAndStartGame()
 
 void AChess_GameMode::ExecuteMove(AChess_Piece* Piece, Chess_Move Move)
 {
-	// GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Doing a move"));
-	// I have to:
-	// Remove the old tile reference to that piece and edit the tile status to empty
-	GField->TileMap[Move.FromPosition]->SetEmptyTile();
-	// Handling the capture in case of capture
-	// Check if the tile is occupied (just need it because there is also pawn promotion and the move is set to be legal)
-	if (GField->TileMap[Move.ToPosition]->GetTileStatus() != ETileStatus::EMPTY){
-		GField->TileMap[Move.ToPosition]->GetOccupyingPiece()->SelfDestroy();		// if the tile is occupied it's a capure move
-		GField->TileMap[Move.ToPosition]->SetEmptyTile();							// to have a consistent state
-	}
-
-	// Set the actor location of the piece
-	FVector NewPosition = GField->GetRelativeLocationByXYPosition(Move.ToPosition.X, Move.ToPosition.Y);
-	NewPosition.Z += 1;	//vertical offset to avoid collisions
-	// I have to add vertical offset to avoid collisions
-	
-	Piece->SetActorLocationAndRotation(NewPosition,FRotator::ZeroRotator );
-	// GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Piece Moved!"));
-	// Edit the tile status to occupied by the new piece and add the reference
-	GField->TileMap[Move.ToPosition]->SetOccupyingPiece(Piece);			// Sets the new occupying piece
+	GField->ExecuteMove(Piece, Move);
 	
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("EndOfTurn"));
 	TurnNextPlayer(); 
@@ -102,4 +83,15 @@ void AChess_GameMode::TurnNextPlayer()
 	// MoveCounter +=1;
 	CurrentPlayer = GetNextPlayer(CurrentPlayer);
 	Players[CurrentPlayer]->OnTurn();
+}
+
+TArray<Chess_Move> AChess_GameMode::FilterLegalMoves(TArray<Chess_Move> Moves)
+{
+	TArray<Chess_Move> LegalMoves;
+	for (Chess_Move Move : Moves) {
+		if (Move.IsLegal(GField))
+			LegalMoves.Emplace(Move);
+	}
+
+	return LegalMoves;
 }

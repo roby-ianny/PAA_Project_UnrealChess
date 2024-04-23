@@ -18,6 +18,7 @@ AChess_Piece::AChess_Piece()
 	StaticMeshComponent->SetupAttachment(Scene);
 
 	color = 0;
+	Type = EPieceType::NONE;
 }
 
 void AChess_Piece::SetDarkMaterial()

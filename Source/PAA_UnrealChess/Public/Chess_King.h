@@ -25,5 +25,7 @@ protected:
 public:
 	virtual TArray<Chess_Move> ComputeMoves(FVector2D frompos, AChess_GameField* GF) override;
 
+	virtual bool CanCaptureOpponentKing(FVector2D frompos, AChess_GameField* GameField) override;
+
 	AChess_King() { Type = EPieceType::KING; }
 };

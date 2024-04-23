@@ -16,6 +16,7 @@ class Chess_Direction;
 UENUM()
 enum class EPieceType : uint8
 {
+	NONE UMETA(DisplayName = "None"),
 	KING UMETA(DisplayName = "King"),
 	QUEEN UMETA(DisplayName = "Queen"),
 	BISHOP UMETA(DisplayName = "Bishop"),
@@ -46,12 +47,18 @@ public:
 	UFUNCTION()
 	int32 GetColor() const;
 
-	EPieceType GetType() const { return Type; } // returns the type of the piece
+	EPieceType GetType() const { return Type; }			// returns the type of the piece
+
+	bool GetHasMoved() const { return HasMoved; }		// returns if the piece has moved
+
+	void SetHasMoved(bool moved) { HasMoved = moved; }	// set if the piece has moved
 
 	// Array che mostra le posizioni che può raggiungere il pezzo
 	virtual TArray<Chess_Move> ComputeMoves(FVector2D frompos, AChess_GameField* GF);
 
 	virtual bool CanCaptureOpponentKing(FVector2D frompos, AChess_GameField* GameField);
+
+
 
 protected:
 	// Called when the game starts or when spawned

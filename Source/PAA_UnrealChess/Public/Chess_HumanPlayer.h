@@ -26,6 +26,8 @@ public:
 	// game instance reference
 	UChess_GameInstance* GameInstance;
 
+	TArray<Chess_Move> MoveCache;
+
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
@@ -34,8 +36,6 @@ protected:
 	bool IsMyTurn = false;
 
 	bool PieceSelected = false;
-
-	TArray<Chess_Move> MoveCache;
 
 	// Simple function to check if a Tile is in the movecache
 	bool IsInMoveCache(FVector2D TilePosition);

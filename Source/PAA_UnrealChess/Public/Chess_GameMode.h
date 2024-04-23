@@ -50,7 +50,7 @@ public:
 	// called at the start of the game
 	void ChoosePlayerAndStartGame();
 
-	// executes a move
+	// executes a move, abstract = true, does not fisically move the piece, if doMove is false = it does the inverse move
 	void ExecuteMove(AChess_Piece* Piece, Chess_Move Move);
 
 	// get the next player index
@@ -59,5 +59,6 @@ public:
 	// called at the end of the game turn
 	void TurnNextPlayer(); //switcha tra un giocatore e un altro
 	
-
+	// filters all the illegal moves
+	TArray<Chess_Move> FilterLegalMoves(TArray<Chess_Move> Moves);
 };

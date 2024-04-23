@@ -3,6 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
+// #include "Chess_GameField.h"
+
+class AChess_GameField;
+
 /**
  * 
  */
@@ -32,6 +36,8 @@ public:
 
 	Chess_Move();
 	~Chess_Move() = default; //provo ad appoggiarmi al distruttore di default
+
+	virtual bool IsLegal(AChess_GameField* GF);
 };
 
 

@@ -34,7 +34,7 @@ public:
 
 	void SetEmptyTile();
 
-	void SetOccupyingPiece(AChess_Piece* Piece);
+	void SetOccupyingPiece(AChess_Piece* Piece/*, bool destroypiece*/);
 
 	ETileStatus GetTileStatus();
 
