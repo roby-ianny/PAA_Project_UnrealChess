@@ -166,7 +166,7 @@ TArray<AChess_Tile*> AChess_GameField::GetTilesWithPlayerPieces(int32 playercolo
 {
 	TArray<AChess_Tile*> playerpieces;
 
-	ETileStatus PlayerColor;
+	ETileStatus PlayerColor = ETileStatus::EMPTY; //just in case of problems for no value
 	switch (playercolor)
 	{
 	case 0:
@@ -213,7 +213,7 @@ void AChess_GameField::DeHighlightAll()
 
 bool AChess_GameField::IsInCheck(int32 playercolor)
 {
-	int32 opponent;
+	int32 opponent = 0;
 	if (playercolor == 0)
 		opponent = 1;
 	if (playercolor == 1)

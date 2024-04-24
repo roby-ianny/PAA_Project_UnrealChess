@@ -41,10 +41,12 @@ void AChess_GameMode::BeginPlay()
 	float CameraPosX = (GField->TileSize * (4));
 	FVector CameraPos(CameraPosX, - CameraPosX, 1000.0f);	// Prendo due volte cameraposx
 	HumanPlayer->SetActorLocationAndRotation(CameraPos, FRotationMatrix::MakeFromX(FVector(0, -0.02, -1)).Rotator());	//Setto come attore la telecamera e la associo allo humanplayer
-	// Human player = 0
+	// Human player is the player 0, that also indicates the white color
+	HumanPlayer->PlayerNumber = 0;
 	Players.Add(HumanPlayer);
-	//Random Player
+	//Random Player is the player 1, that also indicates the black color
 	AChess_CPURandom* CPU = GetWorld()->SpawnActor<AChess_CPURandom>(FVector(), FRotator());
+	CPU->PlayerNumber = 1;
 
 	// CPU player = 1
 	Players.Add(CPU);
@@ -63,8 +65,6 @@ void AChess_GameMode::ChoosePlayerAndStartGame()
 void AChess_GameMode::ExecuteMove(Chess_Move Move)
 {
 	Move.Execute(GField);
-	
-	CheckForGameOver();
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("EndOfTurn"));
 	TurnNextPlayer(); 
 }
@@ -83,7 +83,9 @@ void AChess_GameMode::TurnNextPlayer()
 {
 	// MoveCounter +=1;
 	CurrentPlayer = GetNextPlayer(CurrentPlayer);
-	Players[CurrentPlayer]->OnTurn();
+	CheckForGameOver(); //ChecksForGameOver before player turn
+	if (!IsGameOver)
+		Players[CurrentPlayer]->OnTurn();
 }
 
 TArray<Chess_Move> AChess_GameMode::FilterLegalMoves(TArray<Chess_Move> Moves)
@@ -111,11 +113,11 @@ TArray<Chess_Move> AChess_GameMode::GetAllPlayerMoves(int32 player)
 void AChess_GameMode::CheckForGameOver()
 {
 	if (GetAllPlayerMoves(CurrentPlayer).Num() == 0) {
-		IsGameOver = true;
+		IsGameOver = true; //the game is over
 		if (GField->IsInCheck(CurrentPlayer))
-			Players[CurrentPlayer]->OnLose();
+			Players[GetNextPlayer(CurrentPlayer)]->OnWin();
 		else
-			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("It's a draw!"));
+			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Stalemmate!"));
 	}
 }
 

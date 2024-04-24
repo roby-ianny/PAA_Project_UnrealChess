@@ -91,8 +91,13 @@ void AChess_HumanPlayer::OnLose()
 	GameInstance->SetTurnMessage(TEXT("Computer Wins!"));
 }
 
+
 void AChess_HumanPlayer::OnClick()
 {
+	AChess_GameMode* GameMode = Cast<AChess_GameMode>(GetWorld()->GetAuthGameMode());
+	if (GameMode->IsGameOver)
+		return; // if the game is over, don't do anything
+
 	//Structure containing information about one hit of a trace, such as point of impact and surface normal at that point
 	FHitResult Hit = FHitResult(ForceInit);
 	GetWorld()->GetFirstPlayerController()->GetHitResultUnderCursor(ECollisionChannel::ECC_Pawn, true, Hit);
@@ -100,8 +105,7 @@ void AChess_HumanPlayer::OnClick()
 	if (Hit.bBlockingHit && IsMyTurn) {
 		// check if i hit a tile 
 		if (AChess_Tile* Tile = Cast<AChess_Tile>(Hit.GetActor())) {
-			// Checks if the tile i occupied
-			AChess_GameMode* GameMode = Cast<AChess_GameMode>(GetWorld()->GetAuthGameMode());
+			// Checks if the tile is occupied
 			if (Tile->GetTileStatus() == ETileStatus::OCCUPIEDWHITE) {
 
 				// If a piece was already selected it de-highlights the tiles
@@ -126,7 +130,6 @@ void AChess_HumanPlayer::OnClick()
 				MoveCache.Empty();
 				IsMyTurn = false;
 				GameMode->ExecuteMove(MoveToExecute);
-				
 			} else //if I click on a non-highlited tile
 				GameField->HighlightTiles(MoveCache, false);
 		}

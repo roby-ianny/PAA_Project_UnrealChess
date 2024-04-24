@@ -3,7 +3,7 @@ Realizzazione di un semplice client per il gioco degli scacchi (2D) in Unreal En
 ## Specifiche che il progetto deve rispettare
 Steps:
 - [X] Griglia con scacchi graficamente corretti
-- [ ] Il gioco funziona a turni e termina quando un giocatore vince
+- [X] Il gioco funziona a turni e termina quando un giocatore vince
 - [X] Suggerimenti delle mosse possibili per ciascun pezzo cliccando sullo stesso
 - [X] AI utilizzando mosse random (fra quelle possibili)
 - [ ] AI utilizzando minimax

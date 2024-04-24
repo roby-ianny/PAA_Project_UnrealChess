@@ -53,6 +53,7 @@ public:
 	virtual void OnTurn() override;
 	virtual void OnWin() override;
 	virtual void OnLose() override;
+	// virtual void OnDraw() override;
 
 	// Called when player does a left mouse click
 	UFUNCTION()

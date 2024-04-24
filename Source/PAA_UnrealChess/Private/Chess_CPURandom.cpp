@@ -8,7 +8,7 @@ AChess_CPURandom::AChess_CPURandom()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-	color = 1;
+	// color = 1;
 	GameInstance = Cast<UChess_GameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 }
 
@@ -35,20 +35,19 @@ void AChess_CPURandom::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 void AChess_CPURandom::OnTurn()
 {
+	AChess_GameMode* GameMode = Cast<AChess_GameMode>(GetWorld()->GetAuthGameMode());
+	if (GameMode->IsGameOver)
+		return; 
+
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("CPU (Random) Turn"));
 	GameInstance->SetTurnMessage(TEXT("CPU (Random) Turn"));
 
 	FTimerHandle TimerHandle; //lambda function per il timer
 
-	AChess_GameMode* GameMode = Cast<AChess_GameMode>(GetWorld()->GetAuthGameMode());
-
-	TArray<Chess_Move> PossibleMoves = GameMode->GetAllPlayerMoves(color);
+	TArray<Chess_Move> PossibleMoves = GameMode->GetAllPlayerMoves(PlayerNumber);
+	
 	// picks a random index for chosing the move
-	// correct? idk
-	GameMode->CheckForGameOver();
-
 	int32 RandomIndex = FMath::RandRange(0,PossibleMoves.Num() - 1);
-
 	// executes the move
 	GameMode->ExecuteMove(PossibleMoves[RandomIndex]);
 
@@ -64,9 +63,8 @@ void AChess_CPURandom::OnWin()
 void AChess_CPURandom::OnLose()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("CPU (Random) Loses"));
-	GameInstance->SetTurnMessage(TEXT("AI Loses!"));
+	GameInstance->SetTurnMessage(TEXT("CPU (Random) Loses!"));
 }
-
 
 
 

@@ -16,6 +16,15 @@ struct FPosition;
  * 
  */
 
+/*
+UENUM()
+enum class EEndReason : uint8
+{
+	CHECKMATE UMETA(DisplayName = "Checkmate"),
+	STALEMATE UMETA(DisplayName = "Stalemate")
+};
+*/
+
 UCLASS()
 
 class PAA_UNREALCHESS_API AChess_GameMode : public AGameMode
@@ -28,7 +37,12 @@ public:
 
 	//array of player interfaces
 	TArray<IChess_PlayerInterface*> Players;
+
+	//Index of the active player
 	int32 CurrentPlayer;
+
+	// endreason of the game (checkmate, stalemate, etc)
+	// EEndReason EndReason;
 	
 	// tracks the number of moves in order to signal a drawn game
 	// int32 MoveCounter; //Maybe an array is better

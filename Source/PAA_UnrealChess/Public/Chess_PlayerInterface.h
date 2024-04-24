@@ -24,12 +24,13 @@ class PAA_UNREALCHESS_API IChess_PlayerInterface
 
 	// Add interface functions to this class. This is the class that will be inherited to implement this interface.
 public:
+	// 0 is first/white player, 1 is second/black player
 	int32 PlayerNumber; 
-	int32 color;
 	AChess_GameField* GameField;
 
 	virtual void OnTurn() {}; 
 	virtual void OnWin() {};
 	virtual void OnLose() {};
+	// irtual void OnDraw() {};
 
 };
