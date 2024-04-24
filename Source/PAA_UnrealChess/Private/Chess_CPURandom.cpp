@@ -8,6 +8,7 @@ AChess_CPURandom::AChess_CPURandom()
 {
  	// Set this pawn to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	color = 1;
 	GameInstance = Cast<UChess_GameInstance>(UGameplayStatics::GetGameInstance(GetWorld()));
 }
 
@@ -39,34 +40,17 @@ void AChess_CPURandom::OnTurn()
 
 	FTimerHandle TimerHandle; //lambda function per il timer
 
-	TArray<AChess_Tile*> CPUTiles = GameField->GetTilesWithPlayerPieces(1);
+	AChess_GameMode* GameMode = Cast<AChess_GameMode>(GetWorld()->GetAuthGameMode());
 
-	AChess_Tile* ChosenTile;
-	TArray<Chess_Move> PossibleMoves;
-	AChess_Piece* PieceToMove;
+	TArray<Chess_Move> PossibleMoves = GameMode->GetAllPlayerMoves(color);
+	// picks a random index for chosing the move
+	// correct? idk
+	GameMode->CheckForGameOver();
 
-	// select random tile
-	if (CPUTiles.Num() > 0)
-	{
-		AChess_GameMode* GameMode = Cast<AChess_GameMode>(GetWorld()->GetAuthGameMode());
-		// picks a tile that has a piece that can move
-		do{
-			// picks a random tile
-			int32 RandomIndex = FMath::RandRange(0, CPUTiles.Num() - 1);
-			ChosenTile = CPUTiles[RandomIndex];
-			// picks the piece and check the possible moves
-			PieceToMove = ChosenTile->GetOccupyingPiece();
-			PossibleMoves = PieceToMove->ComputeMoves(ChosenTile->GetGridPosition(), GameField);
-			PossibleMoves = GameMode->FilterLegalMoves(PossibleMoves);
-		} while (PossibleMoves.Num() == 0); // exits if there are possible moves
+	int32 RandomIndex = FMath::RandRange(0,PossibleMoves.Num() - 1);
 
-		// picks a random index for chosing the move
-		int32 RandomIndex = FMath::RandRange(0,PossibleMoves.Num() - 1);
-
-		// executes the move
-		GameMode->ExecuteMove(PieceToMove, PossibleMoves[RandomIndex]);
-	} else
-		OnLose();
+	// executes the move
+	GameMode->ExecuteMove(PossibleMoves[RandomIndex]);
 
 }
 

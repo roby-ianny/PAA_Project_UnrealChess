@@ -125,7 +125,7 @@ void AChess_HumanPlayer::OnClick()
 				GameField->HighlightTiles(MoveCache, false);
 				MoveCache.Empty();
 				IsMyTurn = false;
-				GameMode->ExecuteMove(PieceToMove, MoveToExecute);
+				GameMode->ExecuteMove(MoveToExecute);
 				
 			} else //if I click on a non-highlited tile
 				GameField->HighlightTiles(MoveCache, false);

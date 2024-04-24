@@ -220,65 +220,26 @@ bool AChess_GameField::IsInCheck(int32 playercolor)
 		opponent = 0;
 
 	for (AChess_Tile* Tile : GetTilesWithPlayerPieces(opponent)) {
-		if (Tile->GetOccupyingPiece()->CanCaptureOpponentKing(Tile->GetGridPosition(), this))
+		if (Tile->GetOccupyingPiece()->CanCaptureOpponentKing(Tile->GetGridPosition(), this)) {
+			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Check!"));
 			return true;
+		}
 	}
 	return false;
 }
 
-void AChess_GameField::ExecuteMove(AChess_Piece* Piece, Chess_Move Move)
+/*
+void AChess_GameField::ExecuteMove(Chess_Move Move)
 {
-	// Set that the piece has moved in case it's false
-	if (!Piece->GetHasMoved())
-		Piece->SetHasMoved(true); 
-	// Remove the old tile reference to that piece and edit the tile status to empty
-	TileMap[Move.FromPosition]->SetEmptyTile();
-	// Handling the capture in case of capture
-	// Check if the tile is occupied (just need it because there is also pawn promotion and the move is set to be legal)
-	if (TileMap[Move.ToPosition]->GetTileStatus() != ETileStatus::EMPTY) {
-		TileMap[Move.ToPosition]->GetOccupyingPiece()->SelfDestroy();		// if the tile is occupied it's a capure move
-		TileMap[Move.ToPosition]->SetEmptyTile();							// to have a consistent state
-	}
-
-	// Set the actor location of the piece
-	FVector NewPosition = GetRelativeLocationByXYPosition(Move.ToPosition.X, Move.ToPosition.Y);
-	NewPosition.Z += 1;	//vertical offset to avoid collisions
-	// I have to add vertical offset to avoid collisions
-
-	Piece->SetActorLocationAndRotation(NewPosition, FRotator::ZeroRotator);
-	// GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Piece Moved!"));
-	// Edit the tile status to occupied by the new piece and add the reference
-	TileMap[Move.ToPosition]->SetOccupyingPiece(Piece);			// Sets the new occupying piece
+	Move.Execute(this);
 }
+
 
 void AChess_GameField::ExecuteVirtualMove(AChess_Piece* PieceToMove, Chess_Move Move, AChess_Piece*& CapturedPiece, bool& oldhasmoved, bool undo)
 {
-	if (!undo) {
-		// Remove the old tile reference to that piece and edit the tile status to empty
-		TileMap[Move.FromPosition]->SetEmptyTile();
-		// Handling the capture in case of capture
-		// Check if the tile is occupied (just need it because there is also pawn promotion and the move is set to be legal)
-		if (TileMap[Move.ToPosition]->GetTileStatus() != ETileStatus::EMPTY) {
-			CapturedPiece = TileMap[Move.ToPosition]->GetOccupyingPiece();		// if the tile is occupied it's a capure move
-			TileMap[Move.ToPosition]->SetEmptyTile();
-		} else
-			CapturedPiece = nullptr; //the tile is empty, no capture
-		// get the old hasmoved value
-		oldhasmoved = PieceToMove->GetHasMoved(); // get the old hasmoved value to set it back later
-		TileMap[Move.ToPosition]->SetOccupyingPiece(PieceToMove);						// Sets the new occupying piece
-	}
-	else {
-		// Sets the old tile reference 
-		TileMap[Move.FromPosition]->SetOccupyingPiece(PieceToMove);
-		// Puts back the captured piece in case of capture
-		if (CapturedPiece != nullptr)
-			TileMap[Move.ToPosition]->SetOccupyingPiece(CapturedPiece);
-		else
-			TileMap[Move.ToPosition]->SetEmptyTile();
-
-		PieceToMove->SetHasMoved(oldhasmoved); // set the old hasmoved value
-	}
+	Move.SimulateMove(this, PieceToMove, CapturedPiece, oldhasmoved, undo);
 }
+*/
 
 /*
 // Called every frame

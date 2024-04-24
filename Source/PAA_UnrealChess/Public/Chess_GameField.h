@@ -121,15 +121,9 @@ public:
 
 	bool IsInCheck(int32 playercolor);
 
-	virtual void ExecuteMove(AChess_Piece* Piece, Chess_Move Move);
+	// virtual void ExecuteMove(Chess_Move Move);
 
-	/*
-	  PieceToMove is the piece to effectively move
-	  Move is the move to do/undo
-	  undo = true -> undo the move, undo = false -> do the move
-	  CapturedPiece in case of do is needed to save the captured piece for later, in case of undo it places back the captured piece
-	*/
-	virtual void ExecuteVirtualMove(AChess_Piece* PieceToMove, Chess_Move Move, AChess_Piece*& CapturedPiece, bool& oldhasmoved, bool undo = false);
+	// virtual void ExecuteVirtualMove(AChess_Piece* PieceToMove, Chess_Move Move, AChess_Piece*& CapturedPiece, bool& oldhasmoved, bool undo = false);
 
 /*
 public:	

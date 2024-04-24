@@ -10,7 +10,6 @@
 #include "Chess_GameMode.generated.h"
 
 class AActor;
-
 struct FPosition;
 
 /**
@@ -51,7 +50,7 @@ public:
 	void ChoosePlayerAndStartGame();
 
 	// executes a move, abstract = true, does not fisically move the piece, if doMove is false = it does the inverse move
-	void ExecuteMove(AChess_Piece* Piece, Chess_Move Move);
+	void ExecuteMove(Chess_Move Move);
 
 	// get the next player index
 	int32 GetNextPlayer(int32 Player);
@@ -61,4 +60,8 @@ public:
 	
 	// filters all the illegal moves
 	TArray<Chess_Move> FilterLegalMoves(TArray<Chess_Move> Moves);
+
+	TArray<Chess_Move> GetAllPlayerMoves(int32 player);
+
+	void CheckForGameOver();
 };

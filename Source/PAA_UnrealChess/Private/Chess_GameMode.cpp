@@ -60,10 +60,11 @@ void AChess_GameMode::ChoosePlayerAndStartGame()
 	Players[0]->OnTurn(); //a differenza di quanto fatto per il TTT, qui inizia il bianco, che è l'umano
 }
 
-void AChess_GameMode::ExecuteMove(AChess_Piece* Piece, Chess_Move Move)
+void AChess_GameMode::ExecuteMove(Chess_Move Move)
 {
-	GField->ExecuteMove(Piece, Move);
+	Move.Execute(GField);
 	
+	CheckForGameOver();
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("EndOfTurn"));
 	TurnNextPlayer(); 
 }
@@ -95,3 +96,27 @@ TArray<Chess_Move> AChess_GameMode::FilterLegalMoves(TArray<Chess_Move> Moves)
 
 	return LegalMoves;
 }
+
+TArray<Chess_Move> AChess_GameMode::GetAllPlayerMoves(int32 player)
+{
+	TArray<AChess_Tile*> PlayerTiles = GField->GetTilesWithPlayerPieces(player);
+	TArray<Chess_Move> moveCandidates;
+
+	for (AChess_Tile* Tile : PlayerTiles)
+		moveCandidates.Append(FilterLegalMoves(Tile->GetOccupyingPiece()->ComputeMoves(Tile->GetGridPosition(), GField)));
+
+	return moveCandidates;
+}
+
+void AChess_GameMode::CheckForGameOver()
+{
+	if (GetAllPlayerMoves(CurrentPlayer).Num() == 0) {
+		IsGameOver = true;
+		if (GField->IsInCheck(CurrentPlayer))
+			Players[CurrentPlayer]->OnLose();
+		else
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("It's a draw!"));
+	}
+}
+
+ 
