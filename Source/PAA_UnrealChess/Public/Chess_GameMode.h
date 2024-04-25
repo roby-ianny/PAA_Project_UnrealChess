@@ -43,7 +43,7 @@ public:
 
 	// endreason of the game (checkmate, stalemate, etc)
 	// EEndReason EndReason;
-	
+
 	// tracks the number of moves in order to signal a drawn game
 	// int32 MoveCounter; //Maybe an array is better
 
@@ -53,7 +53,7 @@ public:
 
 	// Reference to GameField object
 	UPROPERTY(VisibleAnywhere)
-		AChess_GameField* GField;
+	AChess_GameField* GField;
 
 	AChess_GameMode();
 
@@ -64,18 +64,18 @@ public:
 	void ChoosePlayerAndStartGame();
 
 	// executes a move, abstract = true, does not fisically move the piece, if doMove is false = it does the inverse move
-	void ExecuteMove(Chess_Move Move);
+	void ExecuteMove(Chess_Move*& Move);
 
 	// get the next player index
 	int32 GetNextPlayer(int32 Player);
 
 	// called at the end of the game turn
 	void TurnNextPlayer(); //switcha tra un giocatore e un altro
-	
-	// filters all the illegal moves
-	TArray<Chess_Move> FilterLegalMoves(TArray<Chess_Move> Moves);
 
-	TArray<Chess_Move> GetAllPlayerMoves(int32 player);
+	// filters all the illegal moves
+	void FilterLegalMoves(TArray<Chess_Move*> Moves);
+
+	TArray <Chess_Move*> GetAllPlayerMoves(int32 player);
 
 	void CheckForGameOver();
 };

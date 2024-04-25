@@ -54,7 +54,7 @@ public:
 	void SetHasMoved(bool moved) { HasMoved = moved; }	// set if the piece has moved
 
 	// Array che mostra le posizioni che può raggiungere il pezzo
-	virtual TArray<Chess_Move> ComputeMoves(FVector2D frompos, AChess_GameField* GF);
+	virtual TArray<Chess_Move*> ComputeMoves(FVector2D frompos, AChess_GameField* GF);
 
 	virtual bool CanCaptureOpponentKing(FVector2D frompos, AChess_GameField* GameField);
 

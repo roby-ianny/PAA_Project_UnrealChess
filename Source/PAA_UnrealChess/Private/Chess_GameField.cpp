@@ -196,10 +196,10 @@ TArray<AChess_Tile*> AChess_GameField::GetTilesWithPlayerPieces(int32 playercolo
 }
 
 // Highlights/DeHighlights all the tiles
-void AChess_GameField::HighlightTiles(TArray<Chess_Move> Moves, bool ToHighlight)
+void AChess_GameField::HighlightTiles(TArray<Chess_Move*> Moves, bool ToHighlight)
 {
-	for (Chess_Move Move : Moves){
-			TileMap[Move.ToPosition]->Highlight(ToHighlight);
+	for (Chess_Move* Move : Moves){
+			TileMap[Move->ToPosition]->Highlight(ToHighlight);
 		}
 }
 
@@ -221,7 +221,7 @@ bool AChess_GameField::IsInCheck(int32 playercolor)
 
 	for (AChess_Tile* Tile : GetTilesWithPlayerPieces(opponent)) {
 		if (Tile->GetOccupyingPiece()->CanCaptureOpponentKing(Tile->GetGridPosition(), this)) {
-			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Check!"));
+			// GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Check!"));
 			return true;
 		}
 	}

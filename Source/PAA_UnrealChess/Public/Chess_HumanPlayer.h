@@ -26,7 +26,7 @@ public:
 	// game instance reference
 	UChess_GameInstance* GameInstance;
 
-	TArray<Chess_Move> MoveCache;
+	TArray<Chess_Move*> MoveCache;
 
 protected:
 	// Called when the game starts or when spawned
@@ -40,7 +40,7 @@ protected:
 	// Simple function to check if a Tile is in the movecache
 	bool IsInMoveCache(FVector2D TilePosition);
 
-	Chess_Move GetMoveFromSelectedPosition(FVector2D TilePosition);
+	Chess_Move* GetMoveFromSelectedPosition(FVector2D TilePosition);
 
 public:	
 	// Called every frame

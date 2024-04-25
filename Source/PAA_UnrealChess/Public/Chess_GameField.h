@@ -6,7 +6,8 @@
 #include "Chess_Direction.h"
 #include "Chess_Tile.h"
 #include "GameFramework/Actor.h"
-#include "Chess_Pawn.h"
+// This includes all the pieces and the associated includes
+#include "Chess_Pawn.h" 
 #include "Chess_Rook.h"
 #include "Chess_Bishop.h"
 #include "Chess_Knight.h"
@@ -115,7 +116,7 @@ public:
 	// Function to get all pieces of a color
 	TArray<AChess_Tile*> GetTilesWithPlayerPieces(int32 color);
 
-	void HighlightTiles(TArray<Chess_Move> Moves, bool ToHighlight);
+	void HighlightTiles(TArray<Chess_Move*> Moves, bool ToHighlight);
 
 	void DeHighlightAll();
 

@@ -27,7 +27,7 @@ protected:
 	};
 
 public:
-	virtual TArray<Chess_Move> ComputeMoves(FVector2D frompos, AChess_GameField* GF) override;
+	virtual TArray<Chess_Move*> ComputeMoves(FVector2D frompos, AChess_GameField* GF) override;
 
 	AChess_Queen() { Type = EPieceType::QUEEN; };
 };

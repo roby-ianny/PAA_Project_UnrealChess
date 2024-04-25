@@ -3,7 +3,6 @@
 
 #include "Chess_Pawn.h"
 #include "Chess_GameField.h"
-
 bool AChess_Pawn::CanMoveTo(FVector2D pos, AChess_GameField* GF)
 {
     return GF->IsInside(pos) && GF->IsEmpty(pos);
@@ -43,8 +42,8 @@ void AChess_Pawn::SetDarkMaterial()
 
 bool AChess_Pawn::CanCaptureOpponentKing(FVector2D frompos, AChess_GameField* GameField)
 {
-    for (Chess_Move Move : CaptureMoves(frompos, GameField)) {
-        FVector2D topos = Move.ToPosition;
+    for (Chess_Move*& Move : CaptureMoves(frompos, GameField)) {
+        FVector2D topos = Move->ToPosition;
         //checks if the tile is empty, it's more efficent to do this because it skips all the empty tiles (idk if it's a short circuit evaluation so i do it this way)
         if (GameField->TileMap[topos]->GetTileStatus() != ETileStatus::EMPTY) {
             //checks if the piece on the tile is a king
@@ -55,45 +54,70 @@ bool AChess_Pawn::CanCaptureOpponentKing(FVector2D frompos, AChess_GameField* Ga
     return false;
 }
 
-TArray<Chess_Move> AChess_Pawn::ForwardMoves(FVector2D frompos, AChess_GameField* GF)
+TArray<Chess_Move*> AChess_Pawn::ForwardMoves(FVector2D frompos, AChess_GameField* GF)
 {
     FVector2D oneMovePos = frompos + forward.DirectionVector;
-    TArray<Chess_Move> Moves;
+    TArray<Chess_Move*> Moves;
 
     if (CanMoveTo(oneMovePos, GF)) {
-        Moves.Add(Chess_NormalMove(frompos, oneMovePos));
+
+        if (oneMovePos.Y == 0 || oneMovePos.Y == 7) {
+            Moves.Append(PromotionMoves(frompos, oneMovePos));
+        }
+        else
+            Moves.Emplace(Chess_NormalMove(frompos, oneMovePos));
 
         FVector2D twoMovePos = oneMovePos + forward.DirectionVector;
 
         if(!HasMoved && CanMoveTo(twoMovePos, GF)) {
-			Moves.Add(Chess_NormalMove(frompos, twoMovePos));
+			Moves.Emplace(Chess_NormalMove(frompos, twoMovePos));
 		}
     }
 
     return Moves;
 }
 
-TArray<Chess_Move> AChess_Pawn::CaptureMoves(FVector2D frompos, AChess_GameField* GF)
+TArray<Chess_Move*> AChess_Pawn::CaptureMoves(FVector2D frompos, AChess_GameField* GF)
 {
-    TArray<Chess_Move> Moves;
+    TArray<Chess_Move*> Moves;
 
     FVector2D toposright = frompos + forward.DirectionVector + Right.DirectionVector;
     FVector2D toposleft = frompos + forward.DirectionVector + Left.DirectionVector;
 
     if (CanCaptureAt(toposright, GF)) {
-        Moves.Add(Chess_NormalMove(frompos, toposright));
+        if (toposright.Y == 0 || toposright.Y == 7) {
+            Moves.Append(PromotionMoves(frompos, toposright));
+            // GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("You can promote a pawn! "));
+        }
+        else
+            Moves.Emplace(Chess_NormalMove(frompos, toposright));
     }
 
     if (CanCaptureAt(toposleft, GF)) {
-        Moves.Add(Chess_NormalMove(frompos, toposleft));
+        if (toposleft.Y == 0 || toposleft.Y == 7) {
+            // GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("You can promote a pawn! "));
+            Moves.Append(PromotionMoves(frompos, toposleft));
+        } else
+            Moves.Emplace(Chess_NormalMove(frompos, toposleft));
     }
 
     return Moves;
 }
 
-TArray<Chess_Move> AChess_Pawn::ComputeMoves(FVector2D frompos, AChess_GameField* GF)
+TArray<Chess_Move*> AChess_Pawn::PromotionMoves(FVector2D frompos, FVector2D topos)
 {
-    TArray<Chess_Move> Moves;
+    TArray<Chess_Move*> Moves;
+    Moves.Emplace(Chess_PawnPromotion(frompos, topos, EPieceType::KNIGHT));
+    Moves.Emplace(Chess_PawnPromotion(frompos, topos, EPieceType::ROOK));
+    Moves.Emplace(Chess_PawnPromotion(frompos, topos, EPieceType::BISHOP));
+    Moves.Emplace(Chess_PawnPromotion(frompos, topos, EPieceType::QUEEN));
+    // GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("GeneratedPromotionMoves"));
+    return Moves;
+}
+
+TArray<Chess_Move*> AChess_Pawn::ComputeMoves(FVector2D frompos, AChess_GameField* GF)
+{
+    TArray<Chess_Move*> Moves;
 
     Moves.Append(ForwardMoves(frompos, GF));
     Moves.Append(CaptureMoves(frompos, GF));

@@ -44,7 +44,7 @@ void AChess_CPURandom::OnTurn()
 
 	FTimerHandle TimerHandle; //lambda function per il timer
 
-	TArray<Chess_Move> PossibleMoves = GameMode->GetAllPlayerMoves(PlayerNumber);
+	TArray<Chess_Move*> PossibleMoves = GameMode->GetAllPlayerMoves(PlayerNumber);
 	
 	// picks a random index for chosing the move
 	int32 RandomIndex = FMath::RandRange(0,PossibleMoves.Num() - 1);

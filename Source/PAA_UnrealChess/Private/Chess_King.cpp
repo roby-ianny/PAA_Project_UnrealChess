@@ -5,11 +5,11 @@
 #include "Chess_GameField.h"
 
 
-TArray<Chess_Move> AChess_King::MovePositions(FVector2D frompos, AChess_GameField* GF)
+TArray<Chess_Move*> AChess_King::MovePositions(FVector2D frompos, AChess_GameField* GF)
 {
 	ETileStatus CheckOpponent;
 
-	TArray<Chess_Move> moves;
+	TArray<Chess_Move*> Moves;
 
 	switch (this->GetColor()) {
 	case 0:
@@ -33,22 +33,22 @@ TArray<Chess_Move> AChess_King::MovePositions(FVector2D frompos, AChess_GameFiel
 
 		if (GF->IsEmpty(pos) || (GF->TileMap[pos]->GetTileStatus() == CheckOpponent))
 		{
-			moves.Add(Chess_NormalMove(frompos, pos));
+			Moves.Emplace(Chess_NormalMove(frompos, pos));
 		}
 	}
 
-	return moves;
+	return Moves;
 }
 
-TArray<Chess_Move> AChess_King::ComputeMoves(FVector2D frompos, AChess_GameField* GF){
+TArray<Chess_Move*> AChess_King::ComputeMoves(FVector2D frompos, AChess_GameField* GF){
 	return MovePositions(frompos, GF);
 }
 
 bool AChess_King::CanCaptureOpponentKing(FVector2D frompos, AChess_GameField* GameField)
 {
 	// Needed in case you want to add castling moves
-	for (Chess_Move Move : ComputeMoves(frompos, GameField)) {
-		FVector2D topos = Move.ToPosition;
+	for (Chess_Move*& Move : ComputeMoves(frompos, GameField)) {
+		FVector2D topos = Move->ToPosition;
 		//checks if the tile is empty, it's more efficent to do this because it skips all the empty tiles (idk if it's a short circuit evaluation so i do it this way)
 		if (GameField->TileMap[topos]->GetTileStatus() != ETileStatus::EMPTY) {
 			//checks if the piece on the tile is a king

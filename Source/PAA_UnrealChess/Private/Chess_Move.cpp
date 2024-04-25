@@ -84,3 +84,12 @@ void Chess_Move::SimulateMove(AChess_GameField* GF, AChess_Piece* PieceToMove, A
 		PieceToMove->SetHasMoved(oldhasmoved); // set the old hasmoved value
 	}
 }
+
+bool Chess_Move::operator==(const Chess_Move& other) const
+{
+	if ((this->FromPosition == other.FromPosition) && (this->ToPosition == other.ToPosition) && (this->Type == other.Type)) {
+		return true;
+	}
+	else
+		return false;
+}

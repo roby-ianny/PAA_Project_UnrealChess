@@ -50,6 +50,10 @@ public:
 	  CapturedPiece in case of do is needed to save the captured piece for later, in case of undo it places back the captured piece
 	*/
 	virtual void SimulateMove(AChess_GameField* GameField, AChess_Piece* PieceToMove, AChess_Piece*& CapturedPiece, bool& oldhasmoved, bool undo = false);
+
+	//override "==" operator to apply search on arrays
+	bool operator==(const Chess_Move& other) const;
+
 };
 
 

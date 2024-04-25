@@ -37,21 +37,21 @@ void AChess_HumanPlayer::BeginPlay()
 
 bool AChess_HumanPlayer::IsInMoveCache(FVector2D TilePosition)
 {
-	for (Chess_Move Move : MoveCache) {
-		if (TilePosition == Move.ToPosition)
+	for (Chess_Move* Move: MoveCache) {
+		if (TilePosition == Move->ToPosition)
 			return true;
 	}
 	return false;
 }
 
-Chess_Move AChess_HumanPlayer::GetMoveFromSelectedPosition(FVector2D TilePosition)
+Chess_Move* AChess_HumanPlayer::GetMoveFromSelectedPosition(FVector2D TilePosition)
 {
-	for (Chess_Move Move : MoveCache) {
-		if (TilePosition == Move.ToPosition)
+	for (Chess_Move* Move : MoveCache) {
+		if (TilePosition == Move->ToPosition)
 			return Move;
 	}
 	// maybe an error report should be displayed
-	return Chess_Move();
+	return nullptr;
 }
 
 
@@ -116,7 +116,7 @@ void AChess_HumanPlayer::OnClick()
 
 				// Compute moves of the selected piece
 				MoveCache = Tile->GetOccupyingPiece()->ComputeMoves(Tile->GetGridPosition(), GameField);
-				MoveCache = GameMode->FilterLegalMoves(MoveCache);
+				GameMode->FilterLegalMoves(MoveCache);
 				if (MoveCache.Num() == 0) {
 					GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("You can't move this piece!"));
 				}
@@ -124,8 +124,8 @@ void AChess_HumanPlayer::OnClick()
 			} else if (PieceSelected == true && IsInMoveCache(Tile->GetGridPosition())) {
 				// ATTT_GameMode* GameMode = Cast<ATTT_GameMode>(GetWorld()->GetAuthGameMode()); //Faccio il casting, in teoria avrei dovuto utilizzare "isvalid" 
 				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Executing a move!"));
-				Chess_Move MoveToExecute = GetMoveFromSelectedPosition(Tile->GetGridPosition());
-				AChess_Piece* PieceToMove = GameField->TileMap[MoveToExecute.FromPosition]->GetOccupyingPiece();
+				Chess_Move* MoveToExecute = GetMoveFromSelectedPosition(Tile->GetGridPosition());
+				AChess_Piece* PieceToMove = GameField->TileMap[MoveToExecute->FromPosition]->GetOccupyingPiece();
 				GameField->HighlightTiles(MoveCache, false);
 				MoveCache.Empty();
 				IsMyTurn = false;
