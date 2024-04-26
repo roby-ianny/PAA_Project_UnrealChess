@@ -20,10 +20,10 @@ protected:
 		Up, Down, Left,	Right,
 		UpRight, UpLeft, DownLeft, DownRight };
 
-	TArray<Chess_Move*> MovePositions(FVector2D frompos, AChess_GameField* GF);
+	TArray<TSharedPtr<Chess_Move>> MovePositions(FVector2D frompos, AChess_GameField* GF);
 
 public:
-	virtual TArray<Chess_Move*> ComputeMoves(FVector2D frompos, AChess_GameField* GF) override;
+	virtual TArray<TSharedPtr<Chess_Move>> ComputeMoves(FVector2D frompos, AChess_GameField* GF) override;
 
 	virtual bool CanCaptureOpponentKing(FVector2D frompos, AChess_GameField* GameField) override;
 

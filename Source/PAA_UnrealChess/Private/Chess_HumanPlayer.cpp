@@ -37,16 +37,16 @@ void AChess_HumanPlayer::BeginPlay()
 
 bool AChess_HumanPlayer::IsInMoveCache(FVector2D TilePosition)
 {
-	for (Chess_Move* Move: MoveCache) {
+	for (TSharedPtr<Chess_Move>& Move: MoveCache) {
 		if (TilePosition == Move->ToPosition)
 			return true;
 	}
 	return false;
 }
 
-Chess_Move* AChess_HumanPlayer::GetMoveFromSelectedPosition(FVector2D TilePosition)
+TSharedPtr<Chess_Move> AChess_HumanPlayer::GetMoveFromSelectedPosition(FVector2D TilePosition)
 {
-	for (Chess_Move* Move : MoveCache) {
+	for (TSharedPtr<Chess_Move>& Move : MoveCache) {
 		if (TilePosition == Move->ToPosition)
 			return Move;
 	}
@@ -98,6 +98,8 @@ void AChess_HumanPlayer::OnClick()
 	if (GameMode->IsGameOver)
 		return; // if the game is over, don't do anything
 
+	//I can optimize the algorithm instead of computing the possible moves everytime that the player clicks
+
 	//Structure containing information about one hit of a trace, such as point of impact and surface normal at that point
 	FHitResult Hit = FHitResult(ForceInit);
 	GetWorld()->GetFirstPlayerController()->GetHitResultUnderCursor(ECollisionChannel::ECC_Pawn, true, Hit);
@@ -124,7 +126,7 @@ void AChess_HumanPlayer::OnClick()
 			} else if (PieceSelected == true && IsInMoveCache(Tile->GetGridPosition())) {
 				// ATTT_GameMode* GameMode = Cast<ATTT_GameMode>(GetWorld()->GetAuthGameMode()); //Faccio il casting, in teoria avrei dovuto utilizzare "isvalid" 
 				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Executing a move!"));
-				Chess_Move* MoveToExecute = GetMoveFromSelectedPosition(Tile->GetGridPosition());
+				TSharedPtr<Chess_Move> MoveToExecute = GetMoveFromSelectedPosition(Tile->GetGridPosition());
 				AChess_Piece* PieceToMove = GameField->TileMap[MoveToExecute->FromPosition]->GetOccupyingPiece();
 				GameField->HighlightTiles(MoveCache, false);
 				MoveCache.Empty();

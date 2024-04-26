@@ -34,14 +34,14 @@ int32 AChess_Piece::GetColor() const
 
 // Restituisce una array vuoto nel caso in cui non si usano i pezzi veri e propri
 
-TArray<Chess_Move*> AChess_Piece::ComputeMoves(FVector2D frompos, AChess_GameField* GF)
+TArray<TSharedPtr<Chess_Move>> AChess_Piece::ComputeMoves(FVector2D frompos, AChess_GameField* GF)
 {
-	return TArray<Chess_Move*>();
+	return TArray<TSharedPtr<Chess_Move>>();
 }
 
 bool AChess_Piece::CanCaptureOpponentKing(FVector2D frompos, AChess_GameField* GameField)
 {
-	for (Chess_Move* Move : ComputeMoves(frompos, GameField)) {
+	for (TSharedPtr<Chess_Move> Move : ComputeMoves(frompos, GameField)) {
 		FVector2D topos = Move->ToPosition;
 		//checks if the tile is empty, it's more efficent to do this because it skips all the empty tiles (idk if it's a short circuit evaluation so i do it this way)
 		if (GameField->TileMap[topos]->GetTileStatus() != ETileStatus::EMPTY){

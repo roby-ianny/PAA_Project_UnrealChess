@@ -21,14 +21,14 @@ protected:
 
 	bool CanCaptureAt(FVector2D pos, AChess_GameField* GF);
 
-	TArray<Chess_Move*> ForwardMoves(FVector2D frompos, AChess_GameField* GF);
+	TArray<TSharedPtr<Chess_Move>> ForwardMoves(FVector2D frompos, AChess_GameField* GF);
 
-	TArray<Chess_Move*> CaptureMoves(FVector2D frompos, AChess_GameField* GF);
+	TArray<TSharedPtr<Chess_Move>> CaptureMoves(FVector2D frompos, AChess_GameField* GF);
 
-	TArray<Chess_Move*> PromotionMoves(FVector2D frompos, FVector2D topos);
+	TArray<TSharedPtr<Chess_Move>> PromotionMoves(FVector2D frompos, FVector2D topos);
 
 public:
-	virtual TArray<Chess_Move*> ComputeMoves(FVector2D frompos, AChess_GameField* GF) override;
+	virtual TArray<TSharedPtr<Chess_Move>> ComputeMoves(FVector2D frompos, AChess_GameField* GF) override;
 
 	virtual void SetDarkMaterial() override;
 

@@ -21,7 +21,7 @@ protected:
 		Left,
 		Right };
 public:
-	virtual TArray<Chess_Move*> ComputeMoves(FVector2D frompos, AChess_GameField* GF) override;
+	virtual TArray<TSharedPtr<Chess_Move>> ComputeMoves(FVector2D frompos, AChess_GameField* GF) override;
 	
 	AChess_Rook() { Type = EPieceType::ROOK; }
 };

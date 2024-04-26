@@ -183,12 +183,12 @@ TArray<AChess_Tile*> AChess_GameField::GetTilesWithPlayerPieces(int32 playercolo
 		if (playercolor == 0 || playercolor == 1)
 		{
 			if (Tile->GetTileStatus() == PlayerColor)
-				playerpieces.Emplace(Tile);
+				playerpieces.Add(Tile);
 		}
 		else
 		{
 			if (Tile->GetTileStatus() != ETileStatus::EMPTY)
-				playerpieces.Emplace(Tile);
+				playerpieces.Add(Tile);
 		}
 	}
 
@@ -196,9 +196,9 @@ TArray<AChess_Tile*> AChess_GameField::GetTilesWithPlayerPieces(int32 playercolo
 }
 
 // Highlights/DeHighlights all the tiles
-void AChess_GameField::HighlightTiles(TArray<Chess_Move*> Moves, bool ToHighlight)
+void AChess_GameField::HighlightTiles(TArray<TSharedPtr<Chess_Move>> Moves, bool ToHighlight)
 {
-	for (Chess_Move* Move : Moves){
+	for (TSharedPtr<Chess_Move>& Move : Moves){
 			TileMap[Move->ToPosition]->Highlight(ToHighlight);
 		}
 }

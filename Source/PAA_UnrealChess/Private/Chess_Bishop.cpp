@@ -3,10 +3,11 @@
 
 #include "Chess_Bishop.h"
 
-TArray<Chess_Move*> AChess_Bishop::ComputeMoves(FVector2D frompos, AChess_GameField* GF)
+TArray<TSharedPtr<Chess_Move>> AChess_Bishop::ComputeMoves(FVector2D frompos, AChess_GameField* GF)
 {
-    TArray<Chess_Move*> Moves;
+    TArray<TSharedPtr<Chess_Move>> Moves;
 	for (FVector2D pos : MovePositionInDirs(frompos, Directions, GF))
-		Moves.Emplace(Chess_NormalMove(frompos, pos));
+		Moves.Add(MakeShared<Chess_NormalMove>(frompos, pos)); // the problem is here because I allocate an object and not a pointer to the object
 	return Moves;
+	
 }

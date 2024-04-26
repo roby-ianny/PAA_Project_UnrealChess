@@ -62,7 +62,7 @@ void AChess_GameMode::ChoosePlayerAndStartGame()
 	Players[0]->OnTurn(); //a differenza di quanto fatto per il TTT, qui inizia il bianco, che è l'umano
 }
 
-void AChess_GameMode::ExecuteMove(Chess_Move*& Move)
+void AChess_GameMode::ExecuteMove(TSharedPtr<Chess_Move>& Move)
 {
 	Move->Execute(GField);
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("EndOfTurn"));
@@ -88,19 +88,20 @@ void AChess_GameMode::TurnNextPlayer()
 		Players[CurrentPlayer]->OnTurn();
 }
 
-void AChess_GameMode::FilterLegalMoves(TArray<Chess_Move*> Moves)
+void AChess_GameMode::FilterLegalMoves(TArray<TSharedPtr<Chess_Move>>& Moves)
 {
-	for (Chess_Move*& Move : Moves) {
-		if (Move->IsLegal(GField))
-			delete(Move);
-			Moves.Remove(Move);
+	//I have to go backwards on the array to avoid problems with the remove method
+	for (auto i = Moves.Num() - 1; i >= 0; i--) {
+		if (!(Moves[i]->IsLegal(GField)))
+			// the problem is here because of the remove
+			Moves.RemoveAt(i); //the smart pointer will manage the memory
 	}
 }
 
-TArray<Chess_Move*> AChess_GameMode::GetAllPlayerMoves(int32 player)
+TArray<TSharedPtr<Chess_Move>> AChess_GameMode::GetAllPlayerMoves(int32 player)
 {
 	TArray<AChess_Tile*> PlayerTiles = GField->GetTilesWithPlayerPieces(player);
-	TArray <Chess_Move*> moveCandidates;
+	TArray <TSharedPtr<Chess_Move>> moveCandidates;
 
 	for (AChess_Tile* Tile : PlayerTiles)
 		moveCandidates.Append(Tile->GetOccupyingPiece()->ComputeMoves(Tile->GetGridPosition(), GField));

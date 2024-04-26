@@ -116,7 +116,7 @@ public:
 	// Function to get all pieces of a color
 	TArray<AChess_Tile*> GetTilesWithPlayerPieces(int32 color);
 
-	void HighlightTiles(TArray<Chess_Move*> Moves, bool ToHighlight);
+	void HighlightTiles(TArray<TSharedPtr<Chess_Move>> Moves, bool ToHighlight);
 
 	void DeHighlightAll();
 

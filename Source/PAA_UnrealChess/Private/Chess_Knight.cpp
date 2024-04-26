@@ -20,7 +20,7 @@ TArray<FVector2D> AChess_Knight::PotentialPositions(FVector2D frompos)
 	return positions;
 }
 
-TArray<Chess_Move*> AChess_Knight::MovePositions(FVector2D frompos, AChess_GameField* GF)
+TArray<TSharedPtr<Chess_Move>> AChess_Knight::MovePositions(FVector2D frompos, AChess_GameField* GF)
 {
 	ETileStatus CheckOpponent;
 
@@ -37,21 +37,21 @@ TArray<Chess_Move*> AChess_Knight::MovePositions(FVector2D frompos, AChess_GameF
 		break;
 	}
 
-	TArray<Chess_Move*> legalmoves;
+	TArray<TSharedPtr<Chess_Move>> legalmoves;
 
 	for (FVector2D pos : PotentialPositions(frompos))
 	{
 		if (GF->IsInside(pos) && // If I am in the gamefield
 			(GF->IsEmpty(pos) || GF->TileMap[pos]->GetTileStatus() == CheckOpponent)) //If the position is free or if i can catch
 		{
-			legalmoves.Emplace(Chess_NormalMove(frompos, (pos))); // so it's a legal position
+			legalmoves.Add(MakeShared<Chess_NormalMove>(frompos, (pos))); // so it's a legal position
 		}
 	}
 
 	return legalmoves;
 }
 
-TArray<Chess_Move*> AChess_Knight::ComputeMoves(FVector2D frompos, AChess_GameField* GF)
+TArray<TSharedPtr<Chess_Move>> AChess_Knight::ComputeMoves(FVector2D frompos, AChess_GameField* GF)
 {
 	return MovePositions(frompos, GF);
 }
