@@ -14,17 +14,14 @@ Chess_PawnPromotion::Chess_PawnPromotion(FVector2D from, FVector2D to, EPieceTyp
 
 void Chess_PawnPromotion::Execute(AChess_GameField* GF)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Blue, "Executing Pawn Promotion");
-	return;
 	//picks the color of the piece
-	// int32 color = GF->TileMap[FromPosition]->GetOccupyingPiece()->GetColor();
+	int32 color = GF->TileMap[FromPosition]->GetOccupyingPiece()->GetColor();
 	// destroy the old piece
-	// GF->TileMap[FromPosition]->GetOccupyingPiece()->SelfDestroy();
+	GF->TileMap[FromPosition]->GetOccupyingPiece()->SelfDestroy();
 	//set the tile as empyìty
-	// GF->TileMap[FromPosition]->SetEmptyTile();
+	GF->TileMap[FromPosition]->SetEmptyTile();
 
-	// Check if the tile is occupied (just need it because there is also pawn promotion and the move is set to be legal)
-	/*
+	// Check if the tile is occupied (becase a pawn promotion can also have a capture)
 	if (GF->TileMap[ToPosition]->GetTileStatus() != ETileStatus::EMPTY) {
 		GF->TileMap[ToPosition]->GetOccupyingPiece()->SelfDestroy();		// if the tile is occupied it's a capure move
 		GF->TileMap[ToPosition]->SetEmptyTile();							// to have a consistent state
@@ -32,7 +29,6 @@ void Chess_PawnPromotion::Execute(AChess_GameField* GF)
 
 	this->CreatePromotionPiece(GF, color); // create the new piec
 	GF->TileMap[ToPosition]->GetOccupyingPiece()->SetHasMoved(true);
-	*/
 }
 
 void Chess_PawnPromotion::SimulateMove(AChess_GameField* GameField, AChess_Piece* PieceToMove, AChess_Piece*& CapturedPiece, bool& oldhasmoved, bool undo)
