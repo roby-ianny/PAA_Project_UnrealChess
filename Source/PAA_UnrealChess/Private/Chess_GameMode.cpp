@@ -40,7 +40,12 @@ void AChess_GameMode::BeginPlay()
 
 	float CameraPosX = (GField->TileSize * (4));
 	FVector CameraPos(CameraPosX, - CameraPosX, 1000.0f);	// Prendo due volte cameraposx
-	HumanPlayer->SetActorLocationAndRotation(CameraPos, FRotationMatrix::MakeFromX(FVector(0, -0.02, -1)).Rotator());	//Setto come attore la telecamera e la associo allo humanplayer
+
+	// Ottieni la rotazione dalla matrice
+	FRotator NewRotation = FRotationMatrix::MakeFromX(FVector(0, 0, -1)).Rotator();
+	NewRotation.Pitch = -90.0f;	// Imposta il pitch a -90° per guardare in basso
+	NewRotation.Yaw = -90.0f;   // Imposta lo Yaw a -90°
+	HumanPlayer->SetActorLocationAndRotation(CameraPos, NewRotation);	//Setto come attore la telecamera e la associo allo humanplayer
 	// Human player is the player 0, that also indicates the white color
 	HumanPlayer->PlayerNumber = 0;
 	Players.Add(HumanPlayer);
@@ -120,6 +125,27 @@ void AChess_GameMode::CheckForGameOver()
 		else
 			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Stalemmate!"));
 	}
+}
+
+EPieceType AChess_GameMode::PawnPromotionSelection()
+{
+	if (!PPWidget)
+		return EPieceType::NONE;
+
+	// Crea un'istanza del widget
+	UUserWidget* WidgetInstance = CreateWidget<UUserWidget>(GetWorld(), PPWidget);
+
+	// Controlla se l'istanza del widget è valida
+	if (WidgetInstance)
+	{
+		// Aggiungi il widget al viewport
+		WidgetInstance->AddToViewport();
+
+		//just for debug at the moment
+		return EPieceType::NONE;
+	}
+	else
+		return EPieceType::NONE;
 }
 
  

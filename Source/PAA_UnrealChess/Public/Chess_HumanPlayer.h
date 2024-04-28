@@ -9,6 +9,7 @@
 #include "Chess_Move.h"
 #include "Camera/CameraComponent.h"
 #include "Kismet/GameplayStatics.h"
+// #include "/Blueprints/BP_PromotionMenu_C"
 #include "Chess_HumanPlayer.generated.h"
 
 UCLASS()
@@ -26,7 +27,7 @@ public:
 	// game instance reference
 	UChess_GameInstance* GameInstance;
 
-	TArray<TSharedPtr<Chess_Move>> MoveCache;
+	TArray<TSharedPtr<Chess_Move>> MoveCache;	
 
 protected:
 	// Called when the game starts or when spawned

@@ -54,7 +54,6 @@ TSharedPtr<Chess_Move> AChess_HumanPlayer::GetMoveFromSelectedPosition(FVector2D
 	return nullptr;
 }
 
-
 // Called every frame
 void AChess_HumanPlayer::Tick(float DeltaTime)
 {
@@ -127,10 +126,12 @@ void AChess_HumanPlayer::OnClick()
 				// ATTT_GameMode* GameMode = Cast<ATTT_GameMode>(GetWorld()->GetAuthGameMode()); //Faccio il casting, in teoria avrei dovuto utilizzare "isvalid" 
 				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Executing a move!"));
 				TSharedPtr<Chess_Move> MoveToExecute = GetMoveFromSelectedPosition(Tile->GetGridPosition());
-				AChess_Piece* PieceToMove = GameField->TileMap[MoveToExecute->FromPosition]->GetOccupyingPiece();
 				GameField->HighlightTiles(MoveCache, false);
 				MoveCache.Empty();
 				IsMyTurn = false;
+				if (MoveToExecute->Type == EMoveType::PawnPromotion) {
+					EPieceType PromotionPiece = GameMode->PawnPromotionSelection();
+				}
 				GameMode->ExecuteMove(MoveToExecute);
 			} else //if I click on a non-highlited tile
 				GameField->HighlightTiles(MoveCache, false);

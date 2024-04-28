@@ -7,6 +7,8 @@
 #include "Chess_PlayerInterface.h"
 #include "Chess_GameField.h"
 #include "GameFramework/GameMode.h"
+#include "Blueprint/UserWidget.h"
+
 #include "Chess_GameMode.generated.h"
 
 class AActor;
@@ -78,4 +80,10 @@ public:
 	TArray <TSharedPtr<Chess_Move>> GetAllPlayerMoves(int32 player);
 
 	void CheckForGameOver();
+
+	EPieceType PawnPromotionSelection();
+
+protected:
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<UUserWidget> PPWidget;
 };
