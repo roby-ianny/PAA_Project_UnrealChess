@@ -74,6 +74,13 @@ void AChess_GameMode::ExecuteMove(TSharedPtr<Chess_Move>& Move)
 	TurnNextPlayer(); 
 }
 
+void AChess_GameMode::ExecutePawnPromotion(FVector2D FromPos, FVector2D ToPos, EPieceType PromotionType)
+{
+	TSharedPtr<Chess_Move> MoveToExecute = MakeShared<Chess_PawnPromotion>(FromPos, ToPos, PromotionType);
+	ExecuteMove(MoveToExecute);
+}
+
+
 int32 AChess_GameMode::GetNextPlayer(int32 Player)
 {
 	Player++;
@@ -127,25 +134,23 @@ void AChess_GameMode::CheckForGameOver()
 	}
 }
 
-EPieceType AChess_GameMode::PawnPromotionSelection()
+void AChess_GameMode::PawnPromotionSelection(TSharedPtr<Chess_Move> MoveToExecute)
 {
 	if (!PPWidget)
-		return EPieceType::NONE;
+		return;
 
 	// Crea un'istanza del widget
-	UUserWidget* WidgetInstance = CreateWidget<UUserWidget>(GetWorld(), PPWidget);
+	UChess_PPWidget* WidgetInstance = CreateWidget<UChess_PPWidget>(GetWorld(), PPWidget);
+	WidgetInstance->SetFromTo(MoveToExecute->FromPosition, MoveToExecute->ToPosition);
 
 	// Controlla se l'istanza del widget è valida
 	if (WidgetInstance)
 	{
-		// Aggiungi il widget al viewport
 		WidgetInstance->AddToViewport();
-
-		//just for debug at the moment
-		return EPieceType::NONE;
 	}
 	else
-		return EPieceType::NONE;
+		return ;
+	
 }
 
  

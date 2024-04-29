@@ -7,7 +7,7 @@
 #include "Chess_PlayerInterface.h"
 #include "Chess_GameField.h"
 #include "GameFramework/GameMode.h"
-#include "Blueprint/UserWidget.h"
+#include "PPWidget.h"
 
 #include "Chess_GameMode.generated.h"
 
@@ -68,6 +68,8 @@ public:
 	// executes a move, abstract = true, does not fisically move the piece, if doMove is false = it does the inverse move
 	void ExecuteMove(TSharedPtr<Chess_Move>& Move);
 
+	UFUNCTION(BlueprintCallable)
+	void ExecutePawnPromotion(FVector2D FromPost, FVector2D ToPos, EPieceType PromotionType);
 	// get the next player index
 	int32 GetNextPlayer(int32 Player);
 
@@ -81,9 +83,9 @@ public:
 
 	void CheckForGameOver();
 
-	EPieceType PawnPromotionSelection();
+	void PawnPromotionSelection(TSharedPtr<Chess_Move> MoveToExecute);
 
 protected:
 	UPROPERTY(EditDefaultsOnly)
-	TSubclassOf<UUserWidget> PPWidget;
+	TSubclassOf<UChess_PPWidget> PPWidget;
 };

@@ -23,6 +23,7 @@ public:
 	virtual void Execute(AChess_GameField* GF) override;
 
 	virtual void SimulateMove(AChess_GameField* GameField, AChess_Piece* PieceToMove, AChess_Piece*& CapturedPiece, bool& oldhasmoved, bool undo = false) override;
+
 private:
 	void CreatePromotionPiece(AChess_GameField* GF, int32 color);
 };

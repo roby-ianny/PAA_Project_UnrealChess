@@ -13,7 +13,7 @@
 class AChess_GameField;
 class Chess_Direction;
 
-UENUM()
+UENUM(BlueprintType)
 enum class EPieceType : uint8
 {
 	NONE UMETA(DisplayName = "None"),

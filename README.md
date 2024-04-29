@@ -29,13 +29,14 @@ NON VERRANNO VALUTATI PROGETTI:]
 - CHE DANNO ERRORE IN FASE DI COMPILAZIONE
 
 ## Risorse che ho utilizzato
-- [Set dei pezzi: kiwen-suwi](https://github.com/lichess-org/lila/tree/master/public/piece)
+- [Set dei pezzi: kiwen-suwi](https://github.com/lichess-org/lila/tree/master/public/piece)\
+
+## Fonti per Unreal Engine
 - [PNG Import](https://www.youtube.com/watch?v=g9x1xljJau0)
+- [UFUNCTIONS](https://dev.epicgames.com/community/learning/tutorials/Klde/unreal-engine-custom-blueprint-nodes-exposing-c-to-blueprint-with-ufunction)
+
 
 ## Set di risorse per la logica del gioco
-- [ ] https://www.youtube.com/playlist?list=PLFk1_lkqT8MahHPi40ON-jyo5wiqnyHsL
+- [Chess in C# by OttoBotCode](https://www.youtube.com/playlist?list=PLFk1_lkqT8MahHPi40ON-jyo5wiqnyHsL)
 ## Risorsa utile per minimax
 - [ ] https://lichess.org/@/JoaoTx/blog/making-a-simple-chess-engine/fGBIAfGB
-## Altro
-Idea iniziale di come realizzare le classi dei pezzi ![Pieces_UML](./Ideas/PiecesUML)
-- [ ] [Avere la scacchiera perpendicolare alla telecamera](https://www.youtube.com/watch?v=yaVKOwaMoLY)

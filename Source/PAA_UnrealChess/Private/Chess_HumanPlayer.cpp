@@ -130,9 +130,9 @@ void AChess_HumanPlayer::OnClick()
 				MoveCache.Empty();
 				IsMyTurn = false;
 				if (MoveToExecute->Type == EMoveType::PawnPromotion) {
-					EPieceType PromotionPiece = GameMode->PawnPromotionSelection();
-				}
-				GameMode->ExecuteMove(MoveToExecute);
+					GameMode->PawnPromotionSelection(MoveToExecute);
+				} else
+					GameMode->ExecuteMove(MoveToExecute);
 			} else //if I click on a non-highlited tile
 				GameField->HighlightTiles(MoveCache, false);
 		}
