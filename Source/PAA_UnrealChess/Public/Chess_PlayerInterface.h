@@ -31,6 +31,6 @@ public:
 	virtual void OnTurn() {}; 
 	virtual void OnWin() {};
 	virtual void OnLose() {};
-	// irtual void OnDraw() {};
+	virtual void OnDraw() {};
 
 };

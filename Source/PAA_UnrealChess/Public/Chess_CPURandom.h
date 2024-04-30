@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Pawn.h"
+#include "TimerManager.h"
 #include "Chess_PlayerInterface.h"
 #include "Chess_GameInstance.h"
 #include "Chess_GameMode.h"
@@ -35,4 +36,5 @@ public:
 	virtual void OnTurn() override;
 	virtual void OnWin() override;
 	virtual void OnLose() override;
+	virtual void OnDraw() override;
 };

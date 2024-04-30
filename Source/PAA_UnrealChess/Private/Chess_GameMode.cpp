@@ -135,14 +135,15 @@ void AChess_GameMode::CheckForGameOver()
 		if (GField->IsInCheck(CurrentPlayer))
 			Players[GetNextPlayer(CurrentPlayer)]->OnWin();
 		else
-			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Stalemmate!"));
+			// GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Stalemmate!"));
+			Players[GetNextPlayer(CurrentPlayer)]->OnDraw();
 	}
 
 	// if there are only two kings it's a stalemate!
 	if (GField->GetTilesWithPlayerPieces(0).Num() == 1 && GField->GetTilesWithPlayerPieces(1).Num() == 1) {
 		IsGameOver = true; //the game is over
-		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Stalemmate!"));
-
+		// GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Stalemmate!"));
+		Players[GetNextPlayer(CurrentPlayer)]->OnDraw();
 	}
 }
 

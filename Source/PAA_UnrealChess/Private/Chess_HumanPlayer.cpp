@@ -72,22 +72,27 @@ void AChess_HumanPlayer::OnTurn()
 {
 	IsMyTurn = true;
 	PieceSelected = false; // just to be sure
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Your Turn"));
+	// GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Your Turn"));
 	GameInstance->SetTurnMessage(TEXT("Your Turn"));
 	MoveCache.Empty(); //deletes the previous turn movecache
 }
 
 void AChess_HumanPlayer::OnWin()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("You Win!"));
+	// GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("You Win!"));
 	GameInstance->SetTurnMessage(TEXT("Human Wins!"));
 	// GameInstance->IncrementScoreHumanPlayer();
 }
 
 void AChess_HumanPlayer::OnLose()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("You Lose!"));
+	// GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("You Lose!"));
 	GameInstance->SetTurnMessage(TEXT("Computer Wins!"));
+}
+
+void AChess_HumanPlayer::OnDraw()
+{
+	GameInstance->SetTurnMessage(TEXT("Stalemate!"));
 }
 
 
@@ -124,7 +129,7 @@ void AChess_HumanPlayer::OnClick()
 				GameField->HighlightTiles(MoveCache, true);
 			} else if (PieceSelected == true && IsInMoveCache(Tile->GetGridPosition())) {
 				// ATTT_GameMode* GameMode = Cast<ATTT_GameMode>(GetWorld()->GetAuthGameMode()); //Faccio il casting, in teoria avrei dovuto utilizzare "isvalid" 
-				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Executing a move!"));
+				// GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Executing a move!"));
 				TSharedPtr<Chess_Move> MoveToExecute = GetMoveFromSelectedPosition(Tile->GetGridPosition());
 				GameField->HighlightTiles(MoveCache, false);
 				MoveCache.Empty();

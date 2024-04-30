@@ -35,35 +35,40 @@ void AChess_CPURandom::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 
 void AChess_CPURandom::OnTurn()
 {
-	AChess_GameMode* GameMode = Cast<AChess_GameMode>(GetWorld()->GetAuthGameMode());
-	if (GameMode->IsGameOver)
-		return; 
-
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("CPU (Random) Turn"));
-	GameInstance->SetTurnMessage(TEXT("CPU (Random) Turn"));
-
-	FTimerHandle TimerHandle; //lambda function per il timer
-
-	TArray<TSharedPtr<Chess_Move>> PossibleMoves = GameMode->GetAllPlayerMoves(PlayerNumber);
 	
-	// picks a random index for chosing the move
-	int32 RandomIndex = FMath::RandRange(0,PossibleMoves.Num() - 1);
-	// executes the move
-	GameMode->ExecuteMove(PossibleMoves[RandomIndex]);
-
+	// GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("CPU (Random) Turn"));
+	GameInstance->SetTurnMessage(TEXT("CPU (Random) Turn"));
+	
+	FTimerHandle TimerHandle; //sets the timer handle
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, [&]() {
+		// gets the gamemode
+		AChess_GameMode* GameMode = Cast<AChess_GameMode>(GetWorld()->GetAuthGameMode());
+		if (GameMode->IsGameOver)
+			return;
+		TArray<TSharedPtr<Chess_Move>> PossibleMoves = GameMode->GetAllPlayerMoves(PlayerNumber);
+		// picks a random index for chosing the move
+		int32 RandomIndex = FMath::RandRange(0, PossibleMoves.Num() - 1);
+		// execute the move
+		GameMode->ExecuteMove(PossibleMoves[RandomIndex]);
+		}, 1.5f, false); // waits 1,5 second before executing
 }
 
 void AChess_CPURandom::OnWin()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("CPU (Random) Wins"));
+	// GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("CPU (Random) Wins"));
 	GameInstance->SetTurnMessage(TEXT("CPU (Random) Wins"));
 	// GameInstance->IncrementScoreCPURandom();
 }
 
 void AChess_CPURandom::OnLose()
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("CPU (Random) Loses"));
+	// GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("CPU (Random) Loses"));
 	GameInstance->SetTurnMessage(TEXT("CPU (Random) Loses!"));
+}
+
+void AChess_CPURandom::OnDraw()
+{
+	GameInstance->SetTurnMessage(TEXT("Stalemate!"));
 }
 
 
