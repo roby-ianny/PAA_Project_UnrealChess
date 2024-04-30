@@ -39,6 +39,9 @@ public:
 
 	//self destroy/piece eaten
 	UFUNCTION()
+	void Captured();
+
+	UFUNCTION()
 	void SelfDestroy();
 
 	UFUNCTION()
@@ -57,8 +60,6 @@ public:
 	virtual TArray<TSharedPtr<Chess_Move>> ComputeMoves(FVector2D frompos, AChess_GameField* GF);
 
 	virtual bool CanCaptureOpponentKing(FVector2D frompos, AChess_GameField* GameField);
-
-
 
 protected:
 	// Called when the game starts or when spawned

@@ -102,6 +102,12 @@ void AChess_Piece::Tick(float DeltaTime)
 
 }
 
+void AChess_Piece::Captured()
+{
+	//place the piece under the chessboard
+	SetActorLocation(GetActorLocation() + FVector(0, 0, -1));
+}
+
 void AChess_Piece::SelfDestroy()
 {
 	Destroy();

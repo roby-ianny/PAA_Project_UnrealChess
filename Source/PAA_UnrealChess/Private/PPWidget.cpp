@@ -1,8 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-
-#include "Chess_GameMode.h"
 #include "PPWidget.h"
+#include "Chess_GameMode.h"
+
 
 
 EPieceType UChess_PPWidget::GetSelectedPiece() const

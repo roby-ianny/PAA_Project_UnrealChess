@@ -5,9 +5,6 @@
 #include "CoreMinimal.h"
 #include "Chess_Move.h"
 
-//forward declaration for piece type needed for pawn promotion
-enum class EPieceType : uint8;
-
 /**
  * 
  */
@@ -20,10 +17,11 @@ public:
 
 	~Chess_PawnPromotion() = default;
 
-	virtual void Execute(AChess_GameField* GF) override;
+	virtual FPiecesOfMove Execute(AChess_GameField* GF) override;
 
-	virtual void SimulateMove(AChess_GameField* GameField, AChess_Piece* PieceToMove, AChess_Piece*& CapturedPiece, bool& oldhasmoved, bool undo = false) override;
+	virtual void SimulateMove(AChess_GameField* GF, AChess_Piece* PieceToMove, AChess_Piece*& CapturedPiece, bool& oldhasmoved, bool undo = false) override;
 
+	virtual EPieceType GetPromotionPiece() override;
 private:
-	void CreatePromotionPiece(AChess_GameField* GF, int32 color);
+	void CreatePromotionPiece(AChess_GameField* GF, int32 color, bool hidden = false);
 };

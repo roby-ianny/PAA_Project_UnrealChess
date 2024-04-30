@@ -28,10 +28,10 @@ bool Chess_Move::IsLegal(AChess_GameField* GF)
 	return legal;
 }
 
-void Chess_Move::Execute(AChess_GameField* GF)
+FPiecesOfMove Chess_Move::Execute(AChess_GameField* GF)
 {
 	AChess_Piece* Piece = GF->TileMap[FromPosition]->GetOccupyingPiece();
-
+	AChess_Piece* CapturedPiece = nullptr;
 	// Set that the piece has moved in case it's false
 	if (!Piece->GetHasMoved())
 		Piece->SetHasMoved(true);
@@ -40,7 +40,8 @@ void Chess_Move::Execute(AChess_GameField* GF)
 	// Handling the capture in case of capture
 	// Check if the tile is occupied (just need it because there is also pawn promotion and the move is set to be legal)
 	if (GF->TileMap[ToPosition]->GetTileStatus() != ETileStatus::EMPTY) {
-		GF->TileMap[ToPosition]->GetOccupyingPiece()->SelfDestroy();		// if the tile is occupied it's a capure move
+		CapturedPiece = GF->TileMap[ToPosition]->GetOccupyingPiece();		// if the tile is occupied it's a capure move
+		GF->TileMap[ToPosition]->GetOccupyingPiece()->Captured();		
 		GF->TileMap[ToPosition]->SetEmptyTile();							// to have a consistent state
 	}
 
@@ -53,6 +54,14 @@ void Chess_Move::Execute(AChess_GameField* GF)
 	// GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("Piece Moved!"));
 	// Edit the tile status to occupied by the new piece and add the reference
 	GF->TileMap[ToPosition]->SetOccupyingPiece(Piece);			// Sets the new occupying piece
+
+	FPiecesOfMove Pieces = { Piece, CapturedPiece };
+	return Pieces;
+}
+
+EPieceType Chess_Move::GetPromotionPiece()
+{
+	return EPieceType::NONE;
 }
 
 void Chess_Move::SimulateMove(AChess_GameField* GF, AChess_Piece* PieceToMove, AChess_Piece*& CapturedPiece, bool& oldhasmoved, bool undo)

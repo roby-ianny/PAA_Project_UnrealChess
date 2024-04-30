@@ -69,9 +69,14 @@ void AChess_GameMode::ChoosePlayerAndStartGame()
 
 void AChess_GameMode::ExecuteMove(TSharedPtr<Chess_Move>& Move)
 {
-	Move->Execute(GField);
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Blue, TEXT("EndOfTurn"));
-	TurnNextPlayer(); 
+	FPiecesOfMove Pieces =  Move->Execute(GField);
+	char checkstate = ' ';
+	if (GField->IsInCheck(GetNextPlayer(CurrentPlayer)))
+		checkstate = '+'; 
+
+	MoveHistory.Add(FRegisteredMove{ Move, Pieces,checkstate});
+	AddToMoveHistory();
+	TurnNextPlayer();
 }
 
 void AChess_GameMode::ExecutePawnPromotion(FVector2D FromPos, FVector2D ToPos, EPieceType PromotionType)
@@ -132,6 +137,13 @@ void AChess_GameMode::CheckForGameOver()
 		else
 			GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Stalemmate!"));
 	}
+
+	// if there are only two kings it's a stalemate!
+	if (GField->GetTilesWithPlayerPieces(0).Num() == 1 && GField->GetTilesWithPlayerPieces(1).Num() == 1) {
+		IsGameOver = true; //the game is over
+		GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, TEXT("Stalemmate!"));
+
+	}
 }
 
 void AChess_GameMode::PawnPromotionSelection(TSharedPtr<Chess_Move> MoveToExecute)
@@ -151,6 +163,114 @@ void AChess_GameMode::PawnPromotionSelection(TSharedPtr<Chess_Move> MoveToExecut
 	else
 		return ;
 	
+}
+
+FString AChess_GameMode::MoveToChessNotation(int32 MoveIndex)
+{
+	// empty string in case of invalid index
+	if (!(MoveIndex < MoveHistory.Num()))
+		return "";
+
+	FString Notation = ""; //starting from empty string
+	FRegisteredMove RegisteredMove = MoveHistory[MoveIndex]; //get the registered move
+	Notation += FromChessPieceToChessNotation(RegisteredMove.Pieces.MovedPiece); //get the moved piece
+	Notation += FromGridPositionToChessNotation(RegisteredMove.Move->FromPosition);
+	if (RegisteredMove.Pieces.CapturedPiece != nullptr)
+		Notation += "x";
+	Notation += FromGridPositionToChessNotation(RegisteredMove.Move->ToPosition);
+	// in case of pawn promotion we have to return the promotion piece
+	switch (RegisteredMove.Move->GetPromotionPiece()) {
+		case EPieceType::QUEEN:
+			Notation += "Q";
+			break;	
+		case EPieceType::ROOK:
+			Notation += "R";
+			break;
+		case EPieceType::BISHOP:
+			Notation += "B";
+			break;
+		case EPieceType::KNIGHT:
+			Notation += "N";
+			break;
+		default:
+			break;
+	}
+
+	Notation += RegisteredMove.CheckState; //get the check state, space if there's no check
+	return Notation;
+}
+
+FString AChess_GameMode::LatestMoveToChessNotation()
+{
+	return MoveToChessNotation(MoveHistory.Num()  - 1);
+}
+
+TArray<FString> AChess_GameMode::LatestMovesToChessNotation(int32 NumMoves)
+{
+	TArray<FString> Notations;
+	if (NumMoves >= MoveHistory.Num())
+		return Notations;
+
+	for (int32 i = (MoveHistory.Num() - 1); i >= (MoveHistory.Num() - NumMoves); i--)
+		Notations.Add(MoveToChessNotation(i));
+
+	return Notations;
+}
+
+void AChess_GameMode::AddToMoveHistory_Implementation()
+{
+	FString MoveNotation = LatestMoveToChessNotation();
+	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, MoveNotation);
+}
+
+FString AChess_GameMode::FromGridPositionToChessNotation(FVector2D GridPosition)
+{
+	FString Location = ""; //empty string
+
+	// Letters for every column
+	const char Letters[] = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h' };
+
+	// From column number to letter
+	Location += Letters[int(GridPosition.X)];
+	
+	Location.AppendInt(int(GridPosition.Y + 1));
+
+	return Location;
+}
+
+FString AChess_GameMode::FromChessPieceToChessNotation(AChess_Piece* Piece)
+{
+	FString Notation = "";
+
+	// checks for the piece color
+	if (Piece->GetColor() == 1)
+		Notation.AppendChar('b');
+	else
+		Notation.AppendChar('w');
+
+	switch (Piece->GetType())
+	{
+	case EPieceType::ROOK:		
+		Notation.AppendChar('R'); 
+		break;
+		case EPieceType::KNIGHT:	
+			Notation.AppendChar('N');
+			break;
+		case EPieceType::BISHOP:	
+			Notation.AppendChar('B');
+			break;
+		case EPieceType::QUEEN:		
+			Notation.AppendChar('Q');
+			break;
+		case EPieceType::KING:		
+			Notation.AppendChar('K');
+			break;
+		case EPieceType::PAWN:
+		default:					
+			break;
+	}
+
+	return Notation;
 }
 
  

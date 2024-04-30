@@ -37,17 +37,13 @@ void AChess_Tile::SetDarkMaterial()
 	StaticMeshComponent->SetMaterial(0, DarkVariant);
 }
 
-void AChess_Tile::SetOccupyingPiece(AChess_Piece* Piece /*, bool destroypiece*/)
+void AChess_Tile::SetOccupyingPiece(AChess_Piece* Piece)
 {
 	// Destroy the old piece if needed
 	if (TileStatus != ETileStatus::EMPTY) {
 		// This is needed to guarantee consistency
 		AChess_Piece* PieceToDestroy = GetOccupyingPiece();
 		OccupyingPiece = nullptr;
-		/*
-		if (destroypiece)
-			PieceToDestroy->SelfDestroy();
-		*/
 	}
 
 	// Sets the new Piece

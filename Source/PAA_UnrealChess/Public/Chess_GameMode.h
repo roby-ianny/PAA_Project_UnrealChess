@@ -27,6 +27,16 @@ enum class EEndReason : uint8
 };
 */
 
+
+USTRUCT()
+struct FRegisteredMove
+{
+	GENERATED_BODY()
+	TSharedPtr<Chess_Move> Move;
+	FPiecesOfMove Pieces;
+	char CheckState = ' ';
+};
+
 UCLASS()
 
 class PAA_UNREALCHESS_API AChess_GameMode : public AGameMode
@@ -85,7 +95,27 @@ public:
 
 	void PawnPromotionSelection(TSharedPtr<Chess_Move> MoveToExecute);
 
+	FString MoveToChessNotation(int32 MoveIndex);
+	
+	UFUNCTION(BlueprintCallable)
+	FString LatestMoveToChessNotation();
+
+	TArray<FString> LatestMovesToChessNotation(int32 NumMoves);
+
+	UFUNCTION(BlueprintNativeEvent)
+	void AddToMoveHistory();
+
+	void AddToMoveHistory_Implementation();
+
 protected:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UChess_PPWidget> PPWidget;
+
+	TArray<FRegisteredMove> MoveHistory;
+
+	UFUNCTION()
+	FString FromGridPositionToChessNotation(FVector2D GridPosition);
+
+	UFUNCTION()
+	FString FromChessPieceToChessNotation(AChess_Piece* Piece);
 };

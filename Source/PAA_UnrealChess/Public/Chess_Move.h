@@ -3,14 +3,26 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Chess_Move.generated.h"
 // #include "Chess_GameField.h"
 
 class AChess_GameField;
 class AChess_Piece;
+//forward declaration for piece type needed for pawn promotion
+enum class EPieceType : uint8;
+
 
 /**
  * 
  */
+
+USTRUCT()
+struct FPiecesOfMove
+{
+	GENERATED_BODY()
+	AChess_Piece* MovedPiece;
+	AChess_Piece* CapturedPiece;
+};
 
 UENUM()
 enum class EMoveType : uint8
@@ -41,7 +53,9 @@ public:
 	virtual bool IsLegal(AChess_GameField* GF);
 
 	// in this way the move is made by the gamefield but this method can be overriden for specific moves like castling, pawn promotion etc.
-	virtual void Execute(AChess_GameField* GF);
+	virtual FPiecesOfMove Execute(AChess_GameField* GF);
+
+	virtual EPieceType GetPromotionPiece();
 
 	/*
 	  PieceToMove is the piece to effectively move
