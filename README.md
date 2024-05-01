@@ -9,7 +9,7 @@ Steps:
 - [ ] AI utilizzando minimax
 - [X] Storico delle mosse con interfaccia grafica 
 	- [Notazione su chess.com](https://www.chess.com/terms/chess-notation)
-- [ ] Replay (cliccando su una mossa nello storico lo stato della scacchiera viene riportato indietro a quello stato)
+- [X] Replay (cliccando su una mossa nello storico lo stato della scacchiera viene riportato indietro a quello stato)
 	- **TIP:** Tenere un array che conserva gli stati della scacchiera (oppure risalire le mosse precedenti)
 
 Misc:

@@ -83,6 +83,28 @@ EPieceType Chess_PawnPromotion::GetPromotionPiece()
 	return PromotionPiece;
 }
 
+void Chess_PawnPromotion::Undo(AChess_GameField* GF, AChess_Piece* MovedPiece, AChess_Piece* CapturedPiece)
+{
+	// Destroy the promotion piece
+	GF->TileMap[ToPosition]->GetOccupyingPiece()->SelfDestroy();
+
+	// Put back the moved piece
+	GF->TileMap[FromPosition]->SetOccupyingPiece(MovedPiece);
+	FVector OldPosition = GF->GetRelativeLocationByXYPosition(FromPosition.X, FromPosition.Y);
+	OldPosition.Z += 1;	//vertical offset to avoid collisions
+	MovedPiece->SetActorLocationAndRotation(OldPosition, FRotator::ZeroRotator);
+	
+	//Puts back the captured piece
+	if (CapturedPiece != nullptr) {
+		GF->TileMap[ToPosition]->SetOccupyingPiece(CapturedPiece);
+		OldPosition = GF->GetRelativeLocationByXYPosition(ToPosition.X, ToPosition.Y);
+		OldPosition.Z += 1;
+		CapturedPiece->SetActorLocationAndRotation(OldPosition, FRotator::ZeroRotator);
+	}
+	else
+		GF->TileMap[ToPosition]->SetEmptyTile();
+}
+
 void Chess_PawnPromotion::CreatePromotionPiece(AChess_GameField* GF, int32 color, bool hidden)
 {
 	bool isblack = (color == 1);

@@ -105,13 +105,21 @@ public:
 	UFUNCTION(BlueprintNativeEvent)
 	void AddToMoveHistory();
 
+	UFUNCTION(BlueprintCallable)
+	int32 GetLastMoveIndex();
+
 	void AddToMoveHistory_Implementation();
+
+	UFUNCTION(BlueprintCallable)
+	void GoToOldState(int32 index);
 
 protected:
 	UPROPERTY(EditDefaultsOnly)
 	TSubclassOf<UChess_PPWidget> PPWidget;
 
 	TArray<FRegisteredMove> MoveHistory;
+
+	void UndoLastMove();
 
 	UFUNCTION()
 	FString FromGridPositionToChessNotation(FVector2D GridPosition);

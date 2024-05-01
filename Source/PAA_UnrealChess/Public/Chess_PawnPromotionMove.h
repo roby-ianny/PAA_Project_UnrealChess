@@ -22,6 +22,8 @@ public:
 	virtual void SimulateMove(AChess_GameField* GF, AChess_Piece* PieceToMove, AChess_Piece*& CapturedPiece, bool& oldhasmoved, bool undo = false) override;
 
 	virtual EPieceType GetPromotionPiece() override;
+
+	virtual void Undo(AChess_GameField* GF, AChess_Piece* MovedPiece, AChess_Piece* CapturedPiece) override;
 private:
 	void CreatePromotionPiece(AChess_GameField* GF, int32 color, bool hidden = false);
 };

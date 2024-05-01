@@ -65,6 +65,8 @@ public:
 	*/
 	virtual void SimulateMove(AChess_GameField* GameField, AChess_Piece* PieceToMove, AChess_Piece*& CapturedPiece, bool& oldhasmoved, bool undo = false);
 
+	virtual void Undo(AChess_GameField* GF, AChess_Piece* MovedPiece, AChess_Piece* CapturedPiece);
+
 	//override "==" operator to apply search on arrays
 	bool operator==(const Chess_Move& other) const;
 

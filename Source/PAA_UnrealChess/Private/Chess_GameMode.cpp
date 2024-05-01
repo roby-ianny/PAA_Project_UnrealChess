@@ -218,10 +218,39 @@ TArray<FString> AChess_GameMode::LatestMovesToChessNotation(int32 NumMoves)
 	return Notations;
 }
 
+int32 AChess_GameMode::GetLastMoveIndex()
+{
+	return (MoveHistory.Num()-1);
+}
+
 void AChess_GameMode::AddToMoveHistory_Implementation()
 {
 	FString MoveNotation = LatestMoveToChessNotation();
 	GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, MoveNotation);
+}
+
+void AChess_GameMode::GoToOldState(int32 index)
+{
+	if (index > GetLastMoveIndex())
+		return;
+
+	for (auto i = GetLastMoveIndex(); i > index; i--) {
+		UndoLastMove();
+	}
+
+	if ((MoveHistory.Num() - 1) % 2 == 0) // state where the latest move was done by the humanplayer
+		CurrentPlayer = 0;
+	else
+		CurrentPlayer = 1;				// state where the latest move was done by the CPU
+	
+	TurnNextPlayer();
+}
+
+void AChess_GameMode::UndoLastMove()
+{
+	FRegisteredMove LatestMove = MoveHistory.Last();
+	LatestMove.Move->Undo(GField,LatestMove.Pieces.MovedPiece, LatestMove.Pieces.CapturedPiece);
+	MoveHistory.Pop();
 }
 
 FString AChess_GameMode::FromGridPositionToChessNotation(FVector2D GridPosition)

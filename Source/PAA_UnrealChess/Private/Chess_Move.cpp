@@ -94,6 +94,34 @@ void Chess_Move::SimulateMove(AChess_GameField* GF, AChess_Piece* PieceToMove, A
 	}
 }
 
+void Chess_Move::Undo(AChess_GameField* GF, AChess_Piece* MovedPiece, AChess_Piece* CapturedPiece)
+{
+	GF->TileMap[FromPosition]->SetOccupyingPiece(MovedPiece);
+	FVector OldPosition = GF->GetRelativeLocationByXYPosition(FromPosition.X, FromPosition.Y);
+	OldPosition.Z += 1;	//vertical offset to avoid collisions
+	MovedPiece->SetActorLocationAndRotation(OldPosition, FRotator::ZeroRotator);
+	// Puts back the captured piece in case of capture
+	if (CapturedPiece != nullptr){
+		GF->TileMap[ToPosition]->SetOccupyingPiece(CapturedPiece);
+		OldPosition = GF->GetRelativeLocationByXYPosition(ToPosition.X, ToPosition.Y);
+		OldPosition.Z += 1;
+		CapturedPiece->SetActorLocationAndRotation(OldPosition, FRotator::ZeroRotator);
+	}
+	else
+		GF->TileMap[ToPosition]->SetEmptyTile();
+
+	// in case of pawns (only time that matters in our case, we can set the hasmoved back to false based on the postion)
+	if (MovedPiece->GetType() == EPieceType::PAWN)
+	{
+		if (MovedPiece->GetColor() == 0 && FromPosition.Y == 1)
+			MovedPiece->SetHasMoved(false);
+		else if (MovedPiece->GetColor() == 1 && FromPosition.Y == 6)
+			MovedPiece->SetHasMoved(false);
+	}
+		
+	
+}
+
 bool Chess_Move::operator==(const Chess_Move& other) const
 {
 	if ((this->FromPosition == other.FromPosition) && (this->ToPosition == other.ToPosition) && (this->Type == other.Type)) {
